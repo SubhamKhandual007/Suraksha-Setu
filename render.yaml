@@ -1,0 +1,30 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: suraksha-setu-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  # Frontend Static Site
+  - type: static
+    name: suraksha-setu-frontend
+    env: static
+    rootDir: frontend/tourist
+    buildCommand: npm install && npm run build
+    publishDir: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://suraksha-setu-backend.onrender.com/api
+      - key: REACT_APP_SOCKET_URL
+        value: https://suraksha-setu-backend.onrender.com

@@ -20,8 +20,9 @@ class SocketService {
         this.socket = null;
       }
       
-      console.log('Creating new socket connection to http://localhost:5000');
-      this.socket = io('http://localhost:5000', {
+      const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+      console.log(`Creating new socket connection to ${SOCKET_URL}`);
+      this.socket = io(SOCKET_URL, {
         transports: ['websocket', 'polling'],
         timeout: 10000,
         reconnection: true,

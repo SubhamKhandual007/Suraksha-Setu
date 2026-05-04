@@ -113,6 +113,10 @@ npm start
 - ✅ **Production Ready**: Fully migrated to cloud database and optimized for mobile.
 - ✅ **Demo Ready**: Prepared for SIH 2025 success! 🏆
 
+## 🌐 **LIVE DEPLOYMENT LINKS** 🚀
+- **Frontend (Mobile App)**: [https://suraksha-setu-1.onrender.com](https://suraksha-setu-1.onrender.com)
+- **Backend API**: [https://suraksha-setu-0iaq.onrender.com](https://suraksha-setu-0iaq.onrender.com)
+
 **Last Updated**: May 04, 2026  
 **Project Status**: 100% Complete - **SUCCESSFULLY FINALIZED!** 🚀
 

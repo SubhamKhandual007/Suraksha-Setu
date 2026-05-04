@@ -25,6 +25,6 @@ services:
     publishDir: build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://suraksha-setu-backend.onrender.com/api
+        value: https://suraksha-setu-0iaq.onrender.com/api
       - key: REACT_APP_SOCKET_URL
-        value: https://suraksha-setu-backend.onrender.com
+        value: https://suraksha-setu-0iaq.onrender.com

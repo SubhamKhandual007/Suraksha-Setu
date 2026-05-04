@@ -1,0 +1,10 @@
+{
+  "name": "smart-tourist-safety-system-frontend",
+  "version": "1.0.0",
+  "description": "Master frontend wrapper",
+  "scripts": {
+    "start": "npm start --prefix tourist",
+    "install-all": "npm install --prefix tourist",
+    "build": "npm run build --prefix tourist"
+  }
+}

@@ -1,0 +1,51 @@
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  emergencyContact: string;
+  digitalId: string;
+  createdAt: string;
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+  emergencyContact: string;
+}
+
+export interface LocationData {
+  latitude: number;
+  longitude: number;
+  timestamp: Date;
+  accuracy?: number;
+  altitude?: number;
+  speed?: number;
+}
+
+export interface EmergencyAlert {
+  id?: string;
+  type: 'panic' | 'medical' | 'accident' | 'theft' | 'harassment' | 'lost' | 'natural_disaster' | 'fire' | 'violence' | 'suspicious_activity' | 'transport' | 'other';
+  message?: string;
+  location: LocationData;
+  timestamp?: Date;
+  status?: 'sent' | 'received' | 'resolved';
+  priority?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+}
+
+export interface AppState {
+  isAuthenticated: boolean;
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  location: LocationData | null;
+  emergencyAlerts: EmergencyAlert[];
+}

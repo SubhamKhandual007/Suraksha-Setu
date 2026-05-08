@@ -1,9 +1,0 @@
-{
-  "outputDirectory": "frontend/tourist/build",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}

@@ -42,36 +42,35 @@ const allowedOrigins = [
   'http://localhost:5174'
 ];
 
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    const isAllowed = allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+    if (isAllowed) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Access-Control-Allow-Headers');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).json({});
+  }
+  next();
+});
+
+// Also use cors package as a backup/standard
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.includes(origin) || 
-                      origin.endsWith('.vercel.app');
-                      
-    if (isAllowed) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
-      console.warn(`CORS blocked for origin: ${origin}`);
       callback(null, false);
     }
   },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'X-Requested-With', 
-    'Accept', 
-    'Origin',
-    'Access-Control-Allow-Headers'
-  ],
-  exposedHeaders: ['Content-Range', 'X-Content-Range']
+  credentials: true
 }));
-
-// Handle preflight for all routes
-app.options('*', cors());
 
 // Create HTTP server for Socket.IO
 const server = createServer(app);

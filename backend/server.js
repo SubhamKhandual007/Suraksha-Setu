@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const { createServer } = require('http');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config(); // Look in the current directory (standard for Render)
 
 // Import database connection and routes
 const connectDB = require('./config/database');
@@ -29,26 +29,36 @@ const generateToken = (userId) => {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 1. CORS - MUST BE FIRST
-app.use(cors({
-  origin: 'https://suraksha-setu-oxkw.vercel.app',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
-}));
+// 1. ABSOLUTE FIRST: MANUAL CORS HEADERS
+// This ensures that even if the app crashes later, the browser gets the CORS headers
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'https://suraksha-setu-oxkw.vercel.app',
+    'https://suraksha-setu-tourist.vercel.app',
+    'https://suraksha-setu-admin.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174'
+  ];
 
-// Explicit OPTIONS handler
-app.options('*', cors());
+  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app'))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', 'https://suraksha-setu-oxkw.vercel.app');
+  }
 
-// Debug route to check if server is live and CORS is working
-app.get('/api/debug-cors', (req, res) => {
-  res.json({ 
-    message: 'CORS Debug Success', 
-    origin: req.headers.origin,
-    allowed: 'https://suraksha-setu-oxkw.vercel.app'
-  });
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Headers');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
 });
 
+// 2. App Settings
 app.set('trust proxy', 1);
 
 // Create HTTP server for Socket.IO

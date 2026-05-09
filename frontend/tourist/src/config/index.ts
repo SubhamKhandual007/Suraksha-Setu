@@ -1,7 +1,8 @@
 // Configuration file for Suraksha Setu app
 
 // API Configuration
-export const API_BASE_URL = 'http://localhost:5000'; // Your backend server URL
+// API Configuration
+export const API_BASE_URL = process.env.REACT_APP_API_URL?.replace(/\/api$/, '') || 'http://localhost:5000'; 
 export const API_ENDPOINTS = {
   AUTH: '/api/auth',
   VERIFICATION: '/api',
@@ -31,7 +32,7 @@ export const EMERGENCY_CONFIG = {
 
 // Socket Configuration
 export const SOCKET_CONFIG = {
-  url: 'http://localhost:5000',
+  url: API_BASE_URL,
   reconnectionAttempts: 5,
   reconnectionDelay: 2000,
 };

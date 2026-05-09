@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { Shield, CheckCircle, User, Mail, Phone, Calendar, Globe, MapPin, AlertTriangle, ArrowLeft } from 'lucide-react';
 
 const VerificationScreen: React.FC = () => {
@@ -16,7 +17,7 @@ const VerificationScreen: React.FC = () => {
       try {
         setLoading(true);
         // Using the public verification endpoint
-        const response = await axios.get(`http://localhost:5000/api/verify/${digitalId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/verify/${digitalId}`);
         if (response.data.success) {
           setTourist(response.data.tourist);
           setAlert(response.data.alert);

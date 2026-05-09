@@ -17,9 +17,10 @@ import {
 } from 'lucide-react';
 import Picker from 'emoji-picker-react';
 import { communityAPI, tokenManager } from '../services/api';
+import { API_BASE_URL } from '../config';
 import styles from './CommunityChat.module.css';
 
-const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+const SOCKET_URL = API_BASE_URL;
 
 const CommunityChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);

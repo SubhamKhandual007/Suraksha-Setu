@@ -98,6 +98,7 @@ const LandingScreen: React.FC = () => {
             <img 
               src="/assets/admin_landing.png" 
               alt="Admin" 
+              loading="lazy"
               style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
             />
             <div style={{ padding: '30px', textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column' }}>

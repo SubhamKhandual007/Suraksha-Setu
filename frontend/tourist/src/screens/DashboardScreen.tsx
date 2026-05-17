@@ -93,7 +93,7 @@ const DashboardCard: React.FC<{
       marginTop: '5px',
       border: '1px solid #f1f5f9'
     }}>
-      <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
+      <img src={image} alt={title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
     </div>
 
     <button 

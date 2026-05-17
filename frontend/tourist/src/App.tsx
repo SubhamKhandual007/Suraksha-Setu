@@ -1,48 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth, refreshAuthStatus } from './hooks/useAuth';
 import Sidebar from './components/Sidebar';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
 
-import DashboardScreen from './screens/DashboardScreen';
-import DigitalIDScreen from './screens/DigitalIDScreen';
-import EmergencyAlertScreen from './screens/EmergencyAlertScreen';
-import LandingScreen from './screens/LandingScreen';
-import AdminDashboardScreen from './screens/AdminDashboardScreen';
-import AdminTouristsScreen from './screens/admin/AdminTouristsScreen';
-import AdminSOSScreen from './screens/admin/AdminSOSScreen';
-import AdminTrackingScreen from './screens/admin/AdminTrackingScreen';
-import AdminZoneManagementScreen from './screens/admin/AdminZoneManagementScreen';
-import AdminQRScannerScreen from './screens/admin/AdminQRScannerScreen';
-import AdminNotificationsScreen from './screens/admin/AdminNotificationsScreen';
-import AdminReportsScreen from './screens/admin/AdminReportsScreen';
-import AdminAnalyticsScreen from './screens/admin/AdminAnalyticsScreen';
-import AdminSettingsScreen from './screens/admin/AdminSettingsScreen';
-import AdminIncidentReportsScreen from './screens/admin/AdminIncidentReportsScreen';
-import ActivityLogScreen from './screens/ActivityLogScreen';
+// Lazy loaded screens
+const LoginScreen = lazy(() => import('./screens/LoginScreen'));
+const RegisterScreen = lazy(() => import('./screens/RegisterScreen'));
 
-import BottomNavigation from './components/BottomNavigation';
-import MapScreen from './screens/MapScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import VerificationScreen from './screens/VerificationScreen';
-import ChatScreen from './screens/ChatScreen';
-import HotelListingScreen from './screens/HotelListingScreen';
-import PaymentHistoryScreen from './screens/PaymentHistoryScreen';
-import AmbulanceBookingScreen from './screens/AmbulanceBookingScreen';
-import VerificationProfileScreen from './screens/VerificationProfileScreen';
-import ReportIncidentScreen from './screens/ReportIncidentScreen';
-import EmergencyServicesScreen from './screens/EmergencyServicesScreen';
-import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
-import ResetPasswordScreen from './screens/ResetPasswordScreen';
-import CommunityChatScreen from './screens/CommunityChatScreen';
+const DashboardScreen = lazy(() => import('./screens/DashboardScreen'));
+const DigitalIDScreen = lazy(() => import('./screens/DigitalIDScreen'));
+const EmergencyAlertScreen = lazy(() => import('./screens/EmergencyAlertScreen'));
+const LandingScreen = lazy(() => import('./screens/LandingScreen'));
+const AdminDashboardScreen = lazy(() => import('./screens/AdminDashboardScreen'));
+const AdminTouristsScreen = lazy(() => import('./screens/admin/AdminTouristsScreen'));
+const AdminSOSScreen = lazy(() => import('./screens/admin/AdminSOSScreen'));
+const AdminTrackingScreen = lazy(() => import('./screens/admin/AdminTrackingScreen'));
+const AdminZoneManagementScreen = lazy(() => import('./screens/admin/AdminZoneManagementScreen'));
+const AdminQRScannerScreen = lazy(() => import('./screens/admin/AdminQRScannerScreen'));
+const AdminNotificationsScreen = lazy(() => import('./screens/admin/AdminNotificationsScreen'));
+const AdminReportsScreen = lazy(() => import('./screens/admin/AdminReportsScreen'));
+const AdminAnalyticsScreen = lazy(() => import('./screens/admin/AdminAnalyticsScreen'));
+const AdminSettingsScreen = lazy(() => import('./screens/admin/AdminSettingsScreen'));
+const AdminIncidentReportsScreen = lazy(() => import('./screens/admin/AdminIncidentReportsScreen'));
+const ActivityLogScreen = lazy(() => import('./screens/ActivityLogScreen'));
+
+const BottomNavigation = lazy(() => import('./components/BottomNavigation'));
+const MapScreen = lazy(() => import('./screens/MapScreen'));
+const ProfileScreen = lazy(() => import('./screens/ProfileScreen'));
+const VerificationScreen = lazy(() => import('./screens/VerificationScreen'));
+const ChatScreen = lazy(() => import('./screens/ChatScreen'));
+const HotelListingScreen = lazy(() => import('./screens/HotelListingScreen'));
+const PaymentHistoryScreen = lazy(() => import('./screens/PaymentHistoryScreen'));
+const AmbulanceBookingScreen = lazy(() => import('./screens/AmbulanceBookingScreen'));
+const VerificationProfileScreen = lazy(() => import('./screens/VerificationProfileScreen'));
+const ReportIncidentScreen = lazy(() => import('./screens/ReportIncidentScreen'));
+const EmergencyServicesScreen = lazy(() => import('./screens/EmergencyServicesScreen'));
+const ForgotPasswordScreen = lazy(() => import('./screens/ForgotPasswordScreen'));
+const ResetPasswordScreen = lazy(() => import('./screens/ResetPasswordScreen'));
+const CommunityChatScreen = lazy(() => import('./screens/CommunityChatScreen'));
 
 const MainLayout = () => {
   return (
     <div className="web-layout">
       <Sidebar />
       <div className="main-content">
-        <Outlet />
+        <Suspense fallback={
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <div className="spinner"></div>
+          </div>
+        }>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );
@@ -66,6 +74,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const FallbackLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div className="spinner"></div>
+  </div>
+);
+
 const App: React.FC = () => {
   useEffect(() => {
     refreshAuthStatus();
@@ -73,58 +87,60 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-          <Route path="/welcome" element={<LandingScreen />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
-          <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
-          <Route path="/reset-password/:token" element={<ResetPasswordScreen />} />
-          <Route path="/verify/:digitalId" element={<VerificationProfileScreen />} />
-          
-          {/* Admin Routes with Sidebar */}
+      <Suspense fallback={<FallbackLoader />}>
+        <Routes>
+            <Route path="/welcome" element={<LandingScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
+            <Route path="/reset-password/:token" element={<ResetPasswordScreen />} />
+            <Route path="/verify/:digitalId" element={<VerificationProfileScreen />} />
+            
+            {/* Admin Routes with Sidebar */}
 
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }>
-            <Route path="dashboard" element={<AdminDashboardScreen />} />
-            <Route path="tourists" element={<AdminTouristsScreen />} />
-            <Route path="tracking" element={<AdminTrackingScreen />} />
-            <Route path="sos" element={<AdminSOSScreen />} />
-            <Route path="scanner" element={<AdminQRScannerScreen />} />
-            <Route path="zones" element={<AdminZoneManagementScreen />} />
-            <Route path="activities" element={<ActivityLogScreen />} />
-            <Route path="incidents" element={<AdminIncidentReportsScreen />} />
-            <Route path="notifications" element={<AdminNotificationsScreen />} />
-            <Route path="reports" element={<AdminReportsScreen />} />
-            <Route path="analytics" element={<AdminAnalyticsScreen />} />
-            <Route path="settings" element={<AdminSettingsScreen />} />
-          </Route>
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }>
+              <Route path="dashboard" element={<AdminDashboardScreen />} />
+              <Route path="tourists" element={<AdminTouristsScreen />} />
+              <Route path="tracking" element={<AdminTrackingScreen />} />
+              <Route path="sos" element={<AdminSOSScreen />} />
+              <Route path="scanner" element={<AdminQRScannerScreen />} />
+              <Route path="zones" element={<AdminZoneManagementScreen />} />
+              <Route path="activities" element={<ActivityLogScreen />} />
+              <Route path="incidents" element={<AdminIncidentReportsScreen />} />
+              <Route path="notifications" element={<AdminNotificationsScreen />} />
+              <Route path="reports" element={<AdminReportsScreen />} />
+              <Route path="analytics" element={<AdminAnalyticsScreen />} />
+              <Route path="settings" element={<AdminSettingsScreen />} />
+            </Route>
 
-          <Route path="/" element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardScreen />} />
-            <Route path="dashboard/detailed" element={<DashboardScreen mode="detailed" />} />
-            <Route path="map" element={<MapScreen />} />
-            <Route path="chat" element={<ChatScreen />} />
-            <Route path="community-chat" element={<CommunityChatScreen />} />
-            <Route path="id" element={<DigitalIDScreen />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<DashboardScreen />} />
+              <Route path="dashboard/detailed" element={<DashboardScreen mode="detailed" />} />
+              <Route path="map" element={<MapScreen />} />
+              <Route path="chat" element={<ChatScreen />} />
+              <Route path="community-chat" element={<CommunityChatScreen />} />
+              <Route path="id" element={<DigitalIDScreen />} />
 
-            <Route path="emergency" element={<EmergencyAlertScreen />} />
-            <Route path="profile" element={<ProfileScreen />} />
-            <Route path="hotels" element={<HotelListingScreen />} />
-            <Route path="payments" element={<PaymentHistoryScreen />} />
-            <Route path="ambulance" element={<AmbulanceBookingScreen />} />
-            <Route path="report-incident" element={<ReportIncidentScreen />} />
-            <Route path="emergency-directory" element={<EmergencyServicesScreen />} />
-            <Route path="location" element={<Navigate to="/map" replace />} />
-          </Route>
-      </Routes>
+              <Route path="emergency" element={<EmergencyAlertScreen />} />
+              <Route path="profile" element={<ProfileScreen />} />
+              <Route path="hotels" element={<HotelListingScreen />} />
+              <Route path="payments" element={<PaymentHistoryScreen />} />
+              <Route path="ambulance" element={<AmbulanceBookingScreen />} />
+              <Route path="report-incident" element={<ReportIncidentScreen />} />
+              <Route path="emergency-directory" element={<EmergencyServicesScreen />} />
+              <Route path="location" element={<Navigate to="/map" replace />} />
+            </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

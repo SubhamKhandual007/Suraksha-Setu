@@ -11,3 +11,18 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+const reportWebVitals = async () => {
+  try {
+    const { getCLS, getFCP, getFID, getLCP, getTTFB } = await import('web-vitals');
+    getCLS(console.log);
+    getFCP(console.log);
+    getFID(console.log);
+    getLCP(console.log);
+    getTTFB(console.log);
+  } catch (e) {
+    // web-vitals logging is non-critical
+  }
+};
+
+reportWebVitals();

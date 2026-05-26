@@ -35,28 +35,28 @@ const Sidebar: React.FC = () => {
   };
 
   const adminNavItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Tourists', path: '/admin/tourists', icon: <Users size={20} /> },
-    { name: 'Live Tracking', path: '/admin/tracking', icon: <MapPin size={20} /> },
-    { name: 'SOS Alerts', path: '/admin/sos', icon: <AlertTriangle size={20} /> },
-    { name: 'Incidents', path: '/admin/incidents', icon: <FileText size={20} /> },
-    { name: 'Reports', path: '/admin/reports', icon: <BarChart size={20} /> },
-    { name: 'QR Scanner', path: '/admin/scanner', icon: <QrCode size={20} /> },
-    { name: 'Zones', path: '/admin/zones', icon: <Map size={20} /> },
-    { name: 'Notifications', path: '/admin/notifications', icon: <Bell size={20} /> },
-    { name: 'Analytics', path: '/admin/analytics', icon: <BarChart size={20} /> },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
+    { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
+    { name: 'Tourists', path: '/admin/tourists', icon: <Users size={18} /> },
+    { name: 'Live Tracking', path: '/admin/tracking', icon: <MapPin size={18} /> },
+    { name: 'SOS Alerts', path: '/admin/sos', icon: <AlertTriangle size={18} /> },
+    { name: 'Incidents', path: '/admin/incidents', icon: <FileText size={18} /> },
+    { name: 'Reports', path: '/admin/reports', icon: <BarChart size={18} /> },
+    { name: 'QR Scanner', path: '/admin/scanner', icon: <QrCode size={18} /> },
+    { name: 'Zones', path: '/admin/zones', icon: <Map size={18} /> },
+    { name: 'Notifications', path: '/admin/notifications', icon: <Bell size={18} /> },
+    { name: 'Analytics', path: '/admin/analytics', icon: <BarChart size={18} /> },
+    { name: 'Settings', path: '/admin/settings', icon: <Settings size={18} /> },
   ];
 
   const touristNavItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: <Home size={20} /> },
-    { name: 'Emergency SOS', path: '/emergency', icon: <Phone size={20} /> },
-    { name: 'Emergency Directory', path: '/emergency-directory', icon: <FileText size={20} /> },
-    { name: 'Suraksha Chat', path: '/chat', icon: <MessageSquare size={20} /> },
-    { name: 'Digital ID', path: '/id', icon: <Shield size={20} /> },
-    { name: 'Report Incident', path: '/report-incident', icon: <AlertTriangle size={20} /> },
-    { name: 'Payments', path: '/payments', icon: <CreditCard size={20} /> },
-    { name: 'Profile', path: '/profile', icon: <User size={20} /> },
+    { name: 'Dashboard', path: '/dashboard', icon: <Home size={18} /> },
+    { name: 'Emergency SOS', path: '/emergency', icon: <Phone size={18} /> },
+    { name: 'Emergency Directory', path: '/emergency-directory', icon: <FileText size={18} /> },
+    { name: 'Suraksha Chat', path: '/chat', icon: <MessageSquare size={18} /> },
+    { name: 'Digital ID', path: '/id', icon: <Shield size={18} /> },
+    { name: 'Report Incident', path: '/report-incident', icon: <AlertTriangle size={18} /> },
+    { name: 'Payments', path: '/payments', icon: <CreditCard size={18} /> },
+    { name: 'Profile', path: '/profile', icon: <User size={18} /> },
   ];
 
   const navItems = isAdmin ? adminNavItems : touristNavItems;
@@ -66,12 +66,13 @@ const Sidebar: React.FC = () => {
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
-      background: '#0f172a'
+      background: '#0a0a0a',
+      borderRight: '1px solid #262626'
     }}>
       {/* Logo Section */}
       <div style={{
-        padding: '28px 24px',
-        borderBottom: '1px solid rgba(255,255,255,0.06)'
+        padding: '24px 20px',
+        borderBottom: '1px solid #1f1f1f'
       }}>
         <div style={{
           display: 'flex',
@@ -79,28 +80,28 @@ const Sidebar: React.FC = () => {
           gap: '12px'
         }}>
           <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            background: '#c9a87c',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Shield size={22} color="white" />
+            <Shield size={20} color="#0a0a0a" />
           </div>
           <div>
             <div style={{
-              fontSize: '17px',
-              fontWeight: '600',
-              color: 'white',
+              fontSize: '15px',
+              fontWeight: '500',
+              color: '#fafafa',
               letterSpacing: '-0.01em'
             }}>
               Suraksha Setu
             </div>
             <div style={{
               fontSize: '11px',
-              color: '#64748b',
+              color: '#525252',
               marginTop: '2px'
             }}>
               {isAdmin ? 'Admin Portal' : 'Safety Portal'}
@@ -118,7 +119,7 @@ const Sidebar: React.FC = () => {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '4px'
+          gap: '2px'
         }}>
           {navItems.map((item) => (
             <NavLink
@@ -127,15 +128,16 @@ const Sidebar: React.FC = () => {
               style={({ isActive }) => ({
                 display: 'flex',
                 alignItems: 'center',
-                padding: '12px 14px',
-                borderRadius: '10px',
-                color: isActive ? 'white' : '#94a3b8',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                color: isActive ? '#fafafa' : '#737373',
                 textDecoration: 'none',
                 fontSize: '14px',
                 fontWeight: isActive ? '500' : '400',
                 gap: '12px',
-                backgroundColor: isActive ? 'rgba(13, 148, 136, 0.15)' : 'transparent',
-                transition: 'all 0.15s ease'
+                backgroundColor: isActive ? '#1f1f1f' : 'transparent',
+                transition: 'all 0.15s ease',
+                border: isActive ? '1px solid #262626' : '1px solid transparent'
               })}
             >
               <span style={{ opacity: 0.9 }}>{item.icon}</span>
@@ -147,8 +149,8 @@ const Sidebar: React.FC = () => {
 
       {/* User Section */}
       <div style={{
-        padding: '16px',
-        borderTop: '1px solid rgba(255,255,255,0.06)'
+        padding: '16px 12px',
+        borderTop: '1px solid #1f1f1f'
       }}>
         {/* User Info */}
         <div style={{
@@ -156,29 +158,30 @@ const Sidebar: React.FC = () => {
           alignItems: 'center',
           gap: '12px',
           padding: '12px',
-          background: 'rgba(255,255,255,0.03)',
-          borderRadius: '12px',
-          marginBottom: '12px'
+          background: '#171717',
+          borderRadius: '10px',
+          marginBottom: '12px',
+          border: '1px solid #262626'
         }}>
           <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            background: '#c9a87c',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'white',
+            color: '#0a0a0a',
             fontWeight: '600',
-            fontSize: '15px'
+            fontSize: '14px'
           }}>
             {userData?.name?.charAt(0) || 'U'}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: '500',
-              color: 'white',
+              color: '#fafafa',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis'
@@ -186,8 +189,8 @@ const Sidebar: React.FC = () => {
               {userData?.name || 'User'}
             </div>
             <div style={{
-              fontSize: '12px',
-              color: '#64748b'
+              fontSize: '11px',
+              color: '#525252'
             }}>
               {isAdmin ? 'Administrator' : 'Tourist'}
             </div>
@@ -201,16 +204,22 @@ const Sidebar: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             width: '100%',
-            padding: '12px 14px',
+            padding: '10px 12px',
             background: 'rgba(239, 68, 68, 0.1)',
-            border: 'none',
-            borderRadius: '10px',
-            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            borderRadius: '8px',
+            color: '#ef4444',
             cursor: 'pointer',
             gap: '12px',
             fontSize: '14px',
             fontWeight: '500',
             transition: 'all 0.15s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
           }}
         >
           <LogOut size={18} />

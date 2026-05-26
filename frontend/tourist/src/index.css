@@ -1,56 +1,60 @@
 /* 
-  Suraksha Setu - Modern Design System
-  A warm, minimal design with teal accents
+  Suraksha Setu - Modern Minimal Design System
+  Dark mode with warm copper accents
 */
 
 :root {
-  /* Primary Colors - Teal/Sage for trust and calm */
-  --primary: #0d9488;
-  --primary-dark: #0f766e;
-  --primary-light: #5eead4;
+  /* Primary - Warm Copper/Bronze for trust and warmth */
+  --primary: #c9a87c;
+  --primary-dark: #b8956a;
+  --primary-light: #e5d4b8;
   
-  /* Neutrals - Warm slate tones */
-  --slate-50: #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-900: #0f172a;
+  /* Neutrals - Rich dark tones */
+  --slate-50: #fafafa;
+  --slate-100: #f5f5f5;
+  --slate-200: #e5e5e5;
+  --slate-300: #d4d4d4;
+  --slate-400: #a3a3a3;
+  --slate-500: #737373;
+  --slate-600: #525252;
+  --slate-700: #404040;
+  --slate-800: #262626;
+  --slate-900: #171717;
+  --slate-950: #0a0a0a;
   
   /* Semantic Colors */
-  --success: #10b981;
+  --success: #22c55e;
   --danger: #ef4444;
   --warning: #f59e0b;
-  --info: #0ea5e9;
+  --info: #3b82f6;
   
   /* Background & Surface */
-  --bg-color: #fafaf9;
-  --card-bg: #ffffff;
-  --sidebar-bg: #0f172a;
+  --bg-color: #0a0a0a;
+  --bg-secondary: #171717;
+  --card-bg: #171717;
+  --card-bg-elevated: #1f1f1f;
+  --sidebar-bg: #0a0a0a;
   
   /* Text */
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
+  --text-primary: #fafafa;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
   
   /* Borders */
-  --border-color: #e2e8f0;
-  --border-light: #f1f5f9;
+  --border-color: #262626;
+  --border-light: #1f1f1f;
   
   /* Layout */
-  --sidebar-width: 280px;
+  --sidebar-width: 260px;
   --bottom-nav-height: 72px;
   
-  /* Shadows - Soft and subtle */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(201, 168, 124, 0.15);
   
   /* Radius */
   --radius-sm: 8px;
@@ -97,7 +101,7 @@ body {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -107,12 +111,13 @@ h1, h2, h3, h4, h5, h6 {
 .web-layout {
   display: flex;
   min-height: 100vh;
+  background-color: var(--bg-color);
 }
 
 .sidebar {
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
-  color: white;
+  color: var(--text-primary);
   height: 100vh;
   position: fixed;
   left: 0;
@@ -121,33 +126,34 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--transition-slow);
   display: flex;
   flex-direction: column;
+  border-right: 1px solid var(--border-color);
 }
 
 .main-content {
   flex: 1;
   margin-left: var(--sidebar-width);
   min-height: 100vh;
-  padding: 32px;
+  padding: 32px 40px;
   width: calc(100% - var(--sidebar-width));
-  max-width: 1400px;
+  max-width: 1200px;
+  background-color: var(--bg-color);
 }
 
 /* Card Component */
 .card {
   background: var(--card-bg);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 16px;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-base);
   content-visibility: auto;
   contain-intrinsic-size: 200px;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  border-color: var(--border-light);
+  background: var(--card-bg-elevated);
 }
 
 /* Button System */
@@ -168,23 +174,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--slate-950);
 }
 
 .btn-primary:hover {
   background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  box-shadow: var(--shadow-glow);
 }
 
 .btn-secondary {
-  background: var(--slate-100);
+  background: var(--card-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-  background: var(--slate-200);
+  background: var(--card-bg-elevated);
+  border-color: var(--slate-600);
 }
 
 .btn-danger {
@@ -202,7 +208,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-ghost:hover {
-  background: var(--slate-100);
+  background: var(--card-bg);
   color: var(--text-primary);
 }
 
@@ -225,7 +231,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: var(--card-bg);
+  background: var(--bg-secondary);
   font-size: 15px;
   color: var(--text-primary);
   transition: all var(--transition-fast);
@@ -233,12 +239,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-field:hover {
-  border-color: var(--slate-300);
+  border-color: var(--slate-600);
 }
 
 .input-field:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(201, 168, 124, 0.15);
 }
 
 .input-field::placeholder {
@@ -255,10 +261,10 @@ h1, h2, h3, h4, h5, h6 {
   width: calc(100% - 32px);
   max-width: 420px;
   height: var(--bottom-nav-height);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(23, 23, 23, 0.9);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.05);
   z-index: 2000;
   border-radius: var(--radius-2xl);
   padding: 0 8px;
@@ -306,18 +312,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .status-safe {
-  background: #ecfdf5;
-  color: #059669;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
 }
 
 .status-warning {
-  background: #fffbeb;
-  color: #d97706;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
 }
 
 .status-danger {
-  background: #fef2f2;
-  color: #dc2626;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
 }
 
 .status-dot {
@@ -345,12 +351,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
 }
 
 /* Screen Title */
 .screen-title {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-primary);
   margin-bottom: 8px;
 }
@@ -402,6 +409,25 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   border-radius: var(--radius-xl);
   z-index: 1;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--slate-700);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--slate-600);
 }
 
 /* Responsive Design */
@@ -458,6 +484,14 @@ h1, h2, h3, h4, h5, h6 {
   .btn:hover {
     transform: none;
   }
+  
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: flex !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -478,10 +512,6 @@ h1, h2, h3, h4, h5, h6 {
   .responsive-grid-1 {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
-  }
-  
-  .mobile-hide {
-    display: none !important;
   }
   
   .bottom-nav {

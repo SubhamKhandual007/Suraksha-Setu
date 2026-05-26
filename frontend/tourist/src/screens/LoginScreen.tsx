@@ -84,7 +84,7 @@ const LoginScreen: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#fafaf9',
+      backgroundColor: '#0a0a0a',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -93,24 +93,23 @@ const LoginScreen: React.FC = () => {
       <div style={{
         display: 'flex',
         width: '100%',
-        maxWidth: '960px',
-        backgroundColor: 'white',
-        borderRadius: '24px',
+        maxWidth: '900px',
+        backgroundColor: '#171717',
+        borderRadius: '20px',
         overflow: 'hidden',
-        boxShadow: '0 20px 40px -12px rgba(0,0,0,0.08)'
+        border: '1px solid #262626'
       }}>
         {/* Left Panel - Branding */}
         <div style={{
           flex: '1',
-          background: role === 'admin' 
-            ? 'linear-gradient(135deg, #1e293b 0%, #334155 100%)'
-            : 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+          background: '#0a0a0a',
           padding: '48px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           position: 'relative',
-          minHeight: '560px'
+          minHeight: '560px',
+          borderRight: '1px solid #262626'
         }} className="mobile-hide">
           {/* Back button */}
           <button
@@ -119,16 +118,22 @@ const LoginScreen: React.FC = () => {
               position: 'absolute',
               top: '24px',
               left: '24px',
-              background: 'rgba(255,255,255,0.1)',
-              border: 'none',
-              borderRadius: '10px',
+              background: '#171717',
+              border: '1px solid #262626',
+              borderRadius: '8px',
               padding: '10px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'white',
-              transition: 'background 0.2s'
+              color: '#a3a3a3',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#404040';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#262626';
             }}
           >
             <ArrowLeft size={20} />
@@ -136,22 +141,22 @@ const LoginScreen: React.FC = () => {
 
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '16px',
-              background: 'rgba(255,255,255,0.15)',
+              width: '56px',
+              height: '56px',
+              borderRadius: '14px',
+              background: role === 'admin' ? '#fafafa' : '#c9a87c',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '32px'
             }}>
-              <Shield size={32} color="white" />
+              <Shield size={28} color="#0a0a0a" />
             </div>
             
             <h2 style={{
               fontSize: '32px',
-              fontWeight: '600',
-              color: 'white',
+              fontWeight: '500',
+              color: '#fafafa',
               marginBottom: '16px',
               lineHeight: '1.2',
               letterSpacing: '-0.02em'
@@ -161,7 +166,7 @@ const LoginScreen: React.FC = () => {
             
             <p style={{
               fontSize: '16px',
-              color: 'rgba(255,255,255,0.8)',
+              color: '#737373',
               lineHeight: '1.6',
               maxWidth: '280px'
             }}>
@@ -171,47 +176,37 @@ const LoginScreen: React.FC = () => {
             </p>
 
             <div style={{
-              marginTop: '40px',
+              marginTop: '48px',
               padding: '20px',
-              background: 'rgba(255,255,255,0.1)',
-              borderRadius: '16px',
-              backdropFilter: 'blur(10px)'
+              background: '#171717',
+              borderRadius: '14px',
+              border: '1px solid #262626'
             }}>
               <div style={{
-                fontSize: '13px',
-                color: 'rgba(255,255,255,0.7)',
-                marginBottom: '8px'
+                fontSize: '12px',
+                color: '#525252',
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
               }}>
                 Powered by
               </div>
               <div style={{
-                fontSize: '18px',
-                fontWeight: '600',
-                color: 'white'
+                fontSize: '17px',
+                fontWeight: '500',
+                color: '#fafafa'
               }}>
                 Suraksha Setu
               </div>
               <div style={{
                 fontSize: '12px',
-                color: 'rgba(255,255,255,0.6)',
+                color: '#525252',
                 marginTop: '4px'
               }}>
                 Safe Tourism Initiative
               </div>
             </div>
           </div>
-
-          {/* Background pattern */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            opacity: 0.05,
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '32px 32px'
-          }} />
         </div>
 
         {/* Right Panel - Form */}
@@ -220,22 +215,23 @@ const LoginScreen: React.FC = () => {
           padding: '48px 40px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          background: '#171717'
         }}>
           {/* Mobile back button */}
           <button
             onClick={() => navigate('/welcome')}
             className="mobile-only"
             style={{
-              background: '#f1f5f9',
-              border: 'none',
-              borderRadius: '10px',
+              background: '#262626',
+              border: '1px solid #404040',
+              borderRadius: '8px',
               padding: '10px',
               cursor: 'pointer',
               display: 'none',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#64748b',
+              color: '#a3a3a3',
               marginBottom: '24px',
               width: 'fit-content'
             }}
@@ -245,16 +241,16 @@ const LoginScreen: React.FC = () => {
 
           <div style={{ marginBottom: '32px' }}>
             <h1 style={{
-              fontSize: '26px',
-              fontWeight: '600',
-              color: '#1e293b',
+              fontSize: '24px',
+              fontWeight: '500',
+              color: '#fafafa',
               marginBottom: '8px',
               letterSpacing: '-0.02em'
             }}>
               Sign In
             </h1>
             <p style={{
-              color: '#64748b',
+              color: '#737373',
               fontSize: '15px'
             }}>
               Continue as {role === 'admin' ? 'Administrator' : 'Tourist'}
@@ -263,13 +259,13 @@ const LoginScreen: React.FC = () => {
           
           {error && (
             <div style={{
-              backgroundColor: '#fef2f2',
-              color: '#dc2626',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              color: '#ef4444',
               padding: '14px 16px',
-              borderRadius: '12px',
+              borderRadius: '10px',
               marginBottom: '24px',
               fontSize: '14px',
-              border: '1px solid #fecaca'
+              border: '1px solid rgba(239, 68, 68, 0.2)'
             }}>
               {error}
             </div>
@@ -282,14 +278,14 @@ const LoginScreen: React.FC = () => {
                 marginBottom: '8px',
                 fontWeight: '500',
                 fontSize: '14px',
-                color: '#1e293b'
+                color: '#a3a3a3'
               }}>
                 Email
               </label>
               <div style={{ position: 'relative' }}>
                 <Mail 
                   size={18} 
-                  color="#94a3b8" 
+                  color="#525252" 
                   style={{ 
                     position: 'absolute', 
                     left: '14px', 
@@ -305,19 +301,20 @@ const LoginScreen: React.FC = () => {
                   style={{
                     width: '100%',
                     padding: '14px 14px 14px 44px',
-                    borderRadius: '12px',
-                    border: '1px solid #e2e8f0',
+                    borderRadius: '10px',
+                    border: '1px solid #262626',
                     fontSize: '15px',
-                    color: '#1e293b',
+                    color: '#fafafa',
                     outline: 'none',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    background: '#0a0a0a'
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0d9488';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13,148,136,0.1)';
+                    e.target.style.borderColor = '#c9a87c';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(201,168,124,0.1)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#e2e8f0';
+                    e.target.style.borderColor = '#262626';
                     e.target.style.boxShadow = 'none';
                   }}
                 />
@@ -330,14 +327,14 @@ const LoginScreen: React.FC = () => {
                 marginBottom: '8px',
                 fontWeight: '500',
                 fontSize: '14px',
-                color: '#1e293b'
+                color: '#a3a3a3'
               }}>
                 Password
               </label>
               <div style={{ position: 'relative' }}>
                 <Lock 
                   size={18} 
-                  color="#94a3b8" 
+                  color="#525252" 
                   style={{ 
                     position: 'absolute', 
                     left: '14px', 
@@ -353,19 +350,20 @@ const LoginScreen: React.FC = () => {
                   style={{
                     width: '100%',
                     padding: '14px 44px 14px 44px',
-                    borderRadius: '12px',
-                    border: '1px solid #e2e8f0',
+                    borderRadius: '10px',
+                    border: '1px solid #262626',
                     fontSize: '15px',
-                    color: '#1e293b',
+                    color: '#fafafa',
                     outline: 'none',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    background: '#0a0a0a'
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0d9488';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(13,148,136,0.1)';
+                    e.target.style.borderColor = '#c9a87c';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(201,168,124,0.1)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#e2e8f0';
+                    e.target.style.borderColor = '#262626';
                     e.target.style.boxShadow = 'none';
                   }}
                 />
@@ -380,7 +378,7 @@ const LoginScreen: React.FC = () => {
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    color: '#94a3b8',
+                    color: '#525252',
                     display: 'flex',
                     alignItems: 'center',
                     padding: '4px'
@@ -399,7 +397,7 @@ const LoginScreen: React.FC = () => {
               <Link 
                 to="/forgot-password" 
                 style={{
-                  color: '#0d9488',
+                  color: '#c9a87c',
                   fontSize: '14px',
                   fontWeight: '500',
                   textDecoration: 'none'
@@ -415,10 +413,10 @@ const LoginScreen: React.FC = () => {
               style={{
                 width: '100%',
                 padding: '14px',
-                borderRadius: '12px',
+                borderRadius: '10px',
                 border: 'none',
-                background: role === 'admin' ? '#1e293b' : '#0d9488',
-                color: 'white',
+                background: role === 'admin' ? '#fafafa' : '#c9a87c',
+                color: '#0a0a0a',
                 fontSize: '15px',
                 fontWeight: '500',
                 cursor: loading ? 'not-allowed' : 'pointer',
@@ -437,9 +435,9 @@ const LoginScreen: React.FC = () => {
                   margin: '24px 0',
                   gap: '16px'
                 }}>
-                  <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
-                  <span style={{ color: '#94a3b8', fontSize: '13px' }}>or</span>
-                  <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#262626' }} />
+                  <span style={{ color: '#525252', fontSize: '13px' }}>or</span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#262626' }} />
                 </div>
                 
                 <button
@@ -453,14 +451,22 @@ const LoginScreen: React.FC = () => {
                     justifyContent: 'center',
                     gap: '12px',
                     padding: '14px',
-                    borderRadius: '12px',
-                    border: '1px solid #e2e8f0',
-                    backgroundColor: 'white',
+                    borderRadius: '10px',
+                    border: '1px solid #262626',
+                    backgroundColor: '#0a0a0a',
                     cursor: loading ? 'not-allowed' : 'pointer',
                     fontSize: '15px',
                     fontWeight: '500',
-                    color: '#1e293b',
+                    color: '#fafafa',
                     transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#404040';
+                    e.currentTarget.style.background = '#171717';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#262626';
+                    e.currentTarget.style.background = '#0a0a0a';
                   }}
                 >
                   <svg width="18" height="18" viewBox="0 0 48 48">
@@ -478,14 +484,14 @@ const LoginScreen: React.FC = () => {
           <div style={{
             marginTop: '32px',
             textAlign: 'center',
-            color: '#64748b',
+            color: '#737373',
             fontSize: '14px'
           }}>
             {"Don't have an account? "}
             <Link 
               to={`/register?role=${role}`} 
               style={{
-                color: '#0d9488',
+                color: '#c9a87c',
                 fontWeight: '500',
                 textDecoration: 'none'
               }}

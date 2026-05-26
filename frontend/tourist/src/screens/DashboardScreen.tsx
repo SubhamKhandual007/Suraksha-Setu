@@ -16,7 +16,8 @@ import {
   CreditCard,
   Users,
   FileText,
-  Phone
+  Phone,
+  ArrowUpRight
 } from 'lucide-react';
 
 import { tokenManager } from '../services/api';
@@ -26,11 +27,10 @@ interface QuickActionProps {
   icon: React.ReactNode;
   label: string;
   color: string;
-  bgColor: string;
   onClick: () => void;
 }
 
-const QuickAction: React.FC<QuickActionProps> = ({ icon, label, color, bgColor, onClick }) => (
+const QuickAction: React.FC<QuickActionProps> = ({ icon, label, color, onClick }) => (
   <button
     onClick={onClick}
     style={{
@@ -39,12 +39,20 @@ const QuickAction: React.FC<QuickActionProps> = ({ icon, label, color, bgColor, 
       alignItems: 'center',
       justifyContent: 'center',
       padding: '20px 16px',
-      borderRadius: '16px',
-      border: 'none',
-      background: bgColor,
+      borderRadius: '14px',
+      border: '1px solid #262626',
+      background: '#171717',
       cursor: 'pointer',
       transition: 'all 0.2s',
       minHeight: '100px'
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.borderColor = '#404040';
+      e.currentTarget.style.background = '#1f1f1f';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.borderColor = '#262626';
+      e.currentTarget.style.background = '#171717';
     }}
   >
     <div style={{
@@ -56,14 +64,14 @@ const QuickAction: React.FC<QuickActionProps> = ({ icon, label, color, bgColor, 
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: '10px',
-      color: 'white'
+      color: '#0a0a0a'
     }}>
       {icon}
     </div>
     <span style={{
       fontSize: '13px',
       fontWeight: '500',
-      color: '#1e293b',
+      color: '#fafafa',
       textAlign: 'center'
     }}>
       {label}
@@ -75,11 +83,10 @@ interface ServiceCardProps {
   icon: React.ReactNode;
   title: string;
   subtitle: string;
-  color: string;
   onClick: () => void;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, subtitle, color, onClick }) => (
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, subtitle, onClick }) => (
   <div
     onClick={onClick}
     style={{
@@ -87,22 +94,30 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, subtitle, color,
       alignItems: 'center',
       gap: '16px',
       padding: '16px',
-      background: 'white',
+      background: '#171717',
       borderRadius: '14px',
       cursor: 'pointer',
-      border: '1px solid #f1f5f9',
+      border: '1px solid #262626',
       transition: 'all 0.2s'
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.borderColor = '#404040';
+      e.currentTarget.style.background = '#1f1f1f';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.borderColor = '#262626';
+      e.currentTarget.style.background = '#171717';
     }}
   >
     <div style={{
-      width: '48px',
-      height: '48px',
+      width: '44px',
+      height: '44px',
       borderRadius: '12px',
-      background: color,
+      background: '#262626',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: 'white',
+      color: '#a3a3a3',
       flexShrink: 0
     }}>
       {icon}
@@ -111,19 +126,19 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, subtitle, color,
       <div style={{
         fontSize: '15px',
         fontWeight: '500',
-        color: '#1e293b',
+        color: '#fafafa',
         marginBottom: '2px'
       }}>
         {title}
       </div>
       <div style={{
         fontSize: '13px',
-        color: '#64748b'
+        color: '#737373'
       }}>
         {subtitle}
       </div>
     </div>
-    <ChevronRight size={18} color="#94a3b8" />
+    <ChevronRight size={18} color="#525252" />
   </div>
 );
 
@@ -153,16 +168,16 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '28px'
+          marginBottom: '32px'
         }}>
           <div>
-            <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>
+            <p style={{ fontSize: '14px', color: '#737373', marginBottom: '4px' }}>
               {getGreeting()}
             </p>
             <h1 style={{
               fontSize: '24px',
-              fontWeight: '600',
-              color: '#1e293b',
+              fontWeight: '500',
+              color: '#fafafa',
               letterSpacing: '-0.02em'
             }}>
               {userData?.name || 'Traveler'}
@@ -173,14 +188,14 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
               width: '44px',
               height: '44px',
               borderRadius: '12px',
-              background: '#f8fafc',
-              border: '1px solid #f1f5f9',
+              background: '#171717',
+              border: '1px solid #262626',
               cursor: 'pointer',
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#64748b'
+              color: '#a3a3a3'
             }}>
               <Bell size={20} />
               <div style={{
@@ -191,7 +206,7 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
                 height: '8px',
                 background: '#ef4444',
                 borderRadius: '50%',
-                border: '2px solid white'
+                border: '2px solid #171717'
               }} />
             </button>
             <div
@@ -202,11 +217,11 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
                 borderRadius: '12px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                background: '#0d9488',
+                background: '#c9a87c',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'white',
+                color: '#0a0a0a',
                 fontWeight: '600',
                 fontSize: '16px'
               }}
@@ -227,21 +242,18 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
             icon={<ShieldAlert size={22} />}
             label="Emergency SOS"
             color="#ef4444"
-            bgColor="#fef2f2"
             onClick={() => navigate('/emergency')}
           />
           <QuickAction
             icon={<UserCircle size={22} />}
             label="Digital ID"
-            color="#0d9488"
-            bgColor="#f0fdfa"
+            color="#c9a87c"
             onClick={() => navigate('/id')}
           />
           <QuickAction
             icon={<Navigation size={22} />}
             label="Safety Map"
-            color="#0ea5e9"
-            bgColor="#f0f9ff"
+            color="#3b82f6"
             onClick={() => navigate('/map')}
           />
         </div>
@@ -250,120 +262,120 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
         <div
           onClick={() => navigate('/chat')}
           style={{
-            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
-            borderRadius: '18px',
+            background: '#c9a87c',
+            borderRadius: '16px',
             padding: '20px',
             display: 'flex',
             alignItems: 'center',
             gap: '16px',
             cursor: 'pointer',
-            marginBottom: '16px'
+            marginBottom: '12px'
           }}
         >
           <div style={{
-            width: '52px',
-            height: '52px',
-            borderRadius: '14px',
-            background: 'rgba(255,255,255,0.2)',
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: 'rgba(10, 10, 10, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <MessageSquare size={24} color="white" />
+            <MessageSquare size={22} color="#0a0a0a" />
           </div>
           <div style={{ flex: 1 }}>
             <div style={{
               fontSize: '16px',
-              fontWeight: '600',
-              color: 'white',
+              fontWeight: '500',
+              color: '#0a0a0a',
               marginBottom: '4px'
             }}>
               Suraksha AI Assistant
             </div>
             <div style={{
               fontSize: '13px',
-              color: 'rgba(255,255,255,0.8)'
+              color: 'rgba(10, 10, 10, 0.7)'
             }}>
               Get instant safety guidance and support
             </div>
           </div>
-          <ChevronRight size={20} color="rgba(255,255,255,0.8)" />
+          <ArrowUpRight size={20} color="#0a0a0a" />
         </div>
 
         {/* Community Card */}
         <div
           onClick={() => navigate('/community-chat')}
           style={{
-            background: '#1e293b',
-            borderRadius: '18px',
+            background: '#171717',
+            borderRadius: '16px',
             padding: '20px',
             display: 'flex',
             alignItems: 'center',
             gap: '16px',
             cursor: 'pointer',
-            marginBottom: '28px'
+            marginBottom: '28px',
+            border: '1px solid #262626'
           }}
         >
           <div style={{
-            width: '52px',
-            height: '52px',
-            borderRadius: '14px',
-            background: 'rgba(255,255,255,0.1)',
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: '#262626',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Users size={24} color="white" />
+            <Users size={22} color="#a3a3a3" />
           </div>
           <div style={{ flex: 1 }}>
             <div style={{
               fontSize: '16px',
-              fontWeight: '600',
-              color: 'white',
+              fontWeight: '500',
+              color: '#fafafa',
               marginBottom: '4px'
             }}>
               Tourist Community
             </div>
             <div style={{
               fontSize: '13px',
-              color: '#94a3b8'
+              color: '#737373'
             }}>
               Connect with fellow travelers
             </div>
           </div>
-          <ChevronRight size={20} color="#94a3b8" />
+          <ChevronRight size={20} color="#525252" />
         </div>
 
         {/* Services Section */}
         <div style={{ marginBottom: '20px' }}>
           <h2 style={{
-            fontSize: '16px',
-            fontWeight: '600',
-            color: '#1e293b',
-            marginBottom: '16px'
+            fontSize: '14px',
+            fontWeight: '500',
+            color: '#737373',
+            marginBottom: '16px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em'
           }}>
             Emergency Services
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <ServiceCard
-              icon={<Ambulance size={22} />}
+              icon={<Ambulance size={20} />}
               title="Ambulance Service"
               subtitle="Emergency medical transport"
-              color="#f59e0b"
               onClick={() => navigate('/ambulance')}
             />
             <ServiceCard
-              icon={<Hospital size={22} />}
+              icon={<Hospital size={20} />}
               title="Nearby Hospitals"
               subtitle="Find medical facilities"
-              color="#0ea5e9"
               onClick={() => navigate('/map', { state: { filter: 'hospital' } })}
             />
             <ServiceCard
-              icon={<Shield size={22} />}
+              icon={<Shield size={20} />}
               title="Police Stations"
               subtitle="Emergency assistance"
-              color="#1e293b"
               onClick={() => navigate('/map', { state: { filter: 'police' } })}
             />
           </div>
@@ -372,26 +384,26 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
         {/* Other Services */}
         <div>
           <h2 style={{
-            fontSize: '16px',
-            fontWeight: '600',
-            color: '#1e293b',
-            marginBottom: '16px'
+            fontSize: '14px',
+            fontWeight: '500',
+            color: '#737373',
+            marginBottom: '16px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em'
           }}>
             Other Services
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <ServiceCard
-              icon={<Hotel size={22} />}
+              icon={<Hotel size={20} />}
               title="Nearby Hotels"
               subtitle="Find accommodation"
-              color="#10b981"
               onClick={() => navigate('/hotels')}
             />
             <ServiceCard
-              icon={<CreditCard size={22} />}
+              icon={<CreditCard size={20} />}
               title="Payment History"
               subtitle="View transactions"
-              color="#8b5cf6"
               onClick={() => navigate('/payments')}
             />
           </div>
@@ -407,33 +419,15 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
     <div className="fade-in" style={{ paddingBottom: '20px' }}>
       {/* Welcome Banner */}
       <section style={{
-        background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-        borderRadius: '20px',
+        background: '#171717',
+        borderRadius: '16px',
         padding: '28px',
-        color: 'white',
-        marginBottom: '28px',
+        color: '#fafafa',
+        marginBottom: '32px',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        border: '1px solid #262626'
       }}>
-        <div style={{
-          position: 'absolute',
-          top: '-40px',
-          right: '-40px',
-          width: '160px',
-          height: '160px',
-          background: 'rgba(255,255,255,0.03)',
-          borderRadius: '50%'
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '-60px',
-          right: '40px',
-          width: '120px',
-          height: '120px',
-          background: 'rgba(255,255,255,0.02)',
-          borderRadius: '50%'
-        }} />
-        
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{
             display: 'flex',
@@ -442,20 +436,20 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
             marginBottom: '16px'
           }}>
             <div style={{
-              width: '56px',
-              height: '56px',
+              width: '52px',
+              height: '52px',
               borderRadius: '14px',
-              background: 'rgba(255,255,255,0.1)',
+              background: '#c9a87c',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Shield size={28} color="white" />
+              <Shield size={26} color="#0a0a0a" />
             </div>
             <div>
               <h2 style={{
-                fontSize: '22px',
-                fontWeight: '600',
+                fontSize: '20px',
+                fontWeight: '500',
                 margin: 0,
                 letterSpacing: '-0.01em'
               }}>
@@ -463,16 +457,16 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
               </h2>
               <p style={{
                 fontSize: '14px',
-                opacity: 0.7,
+                color: '#737373',
                 margin: '4px 0 0'
               }}>
-                Welcome, <span style={{ color: '#5eead4', fontWeight: '500' }}>{userData?.name || 'Traveler'}</span>
+                Welcome, <span style={{ color: '#c9a87c', fontWeight: '500' }}>{userData?.name || 'Traveler'}</span>
               </p>
             </div>
           </div>
           <p style={{
             fontSize: '13px',
-            opacity: 0.6,
+            color: '#525252',
             margin: 0
           }}>
             Your personal safety companion for worry-free travel
@@ -488,9 +482,11 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
         marginBottom: '20px'
       }}>
         <h2 style={{
-          fontSize: '18px',
-          fontWeight: '600',
-          color: '#1e293b'
+          fontSize: '14px',
+          fontWeight: '500',
+          color: '#737373',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
         }}>
           Quick Access
         </h2>
@@ -498,7 +494,7 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
           onClick={() => navigate('/dashboard/detailed')}
           style={{
             fontSize: '14px',
-            color: '#0d9488',
+            color: '#c9a87c',
             fontWeight: '500',
             background: 'none',
             border: 'none',
@@ -516,107 +512,95 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
       {/* Feature Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-        gap: '14px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '12px',
         marginBottom: '24px'
       }}>
         {[
           {
-            icon: <ShieldAlert size={22} />,
+            icon: <ShieldAlert size={20} />,
             title: 'Emergency SOS',
             subtitle: 'Quick alert',
-            color: '#ef4444',
-            bg: '#fef2f2',
+            accent: '#ef4444',
             path: '/emergency'
           },
           {
-            icon: <UserCircle size={22} />,
+            icon: <UserCircle size={20} />,
             title: 'Digital ID',
             subtitle: 'Your credentials',
-            color: '#0d9488',
-            bg: '#f0fdfa',
+            accent: '#c9a87c',
             path: '/id'
           },
           {
-            icon: <MapIcon size={22} />,
+            icon: <MapIcon size={20} />,
             title: 'Safety Map',
             subtitle: 'Zone tracking',
-            color: '#0ea5e9',
-            bg: '#f0f9ff',
+            accent: '#3b82f6',
             path: '/map'
           },
           {
-            icon: <MessageSquare size={22} />,
+            icon: <MessageSquare size={20} />,
             title: 'AI Assistant',
             subtitle: 'Get help',
-            color: '#8b5cf6',
-            bg: '#f5f3ff',
+            accent: '#a855f7',
             path: '/chat'
           },
           {
-            icon: <Hospital size={22} />,
+            icon: <Hospital size={20} />,
             title: 'Hospitals',
             subtitle: 'Find nearby',
-            color: '#0ea5e9',
-            bg: '#f0f9ff',
+            accent: '#22c55e',
             path: '/map',
             state: { filter: 'hospital' }
           },
           {
-            icon: <Shield size={22} />,
+            icon: <Shield size={20} />,
             title: 'Police',
             subtitle: 'Emergency help',
-            color: '#1e293b',
-            bg: '#f8fafc',
+            accent: '#737373',
             path: '/map',
             state: { filter: 'police' }
           },
           {
-            icon: <Ambulance size={22} />,
+            icon: <Ambulance size={20} />,
             title: 'Ambulance',
             subtitle: 'Medical transport',
-            color: '#f59e0b',
-            bg: '#fffbeb',
+            accent: '#f59e0b',
             path: '/ambulance'
           },
           {
-            icon: <Hotel size={22} />,
+            icon: <Hotel size={20} />,
             title: 'Hotels',
             subtitle: 'Accommodation',
-            color: '#10b981',
-            bg: '#ecfdf5',
+            accent: '#06b6d4',
             path: '/hotels'
           },
           {
-            icon: <Users size={22} />,
+            icon: <Users size={20} />,
             title: 'Community',
             subtitle: 'Connect',
-            color: '#6366f1',
-            bg: '#eef2ff',
+            accent: '#ec4899',
             path: '/community-chat'
           },
           {
-            icon: <User size={22} />,
+            icon: <User size={20} />,
             title: 'Profile',
             subtitle: 'Your account',
-            color: '#64748b',
-            bg: '#f8fafc',
+            accent: '#737373',
             path: '/profile'
           },
           {
-            icon: <FileText size={22} />,
+            icon: <FileText size={20} />,
             title: 'Report Incident',
             subtitle: 'File report',
-            color: '#f43f5e',
-            bg: '#fff1f2',
+            accent: '#ef4444',
             path: '/report-incident'
           },
           {
-            icon: <CreditCard size={22} />,
+            icon: <CreditCard size={20} />,
             title: 'Payments',
             subtitle: 'View history',
-            color: '#8b5cf6',
-            bg: '#f5f3ff',
+            accent: '#a855f7',
             path: '/payments'
           }
         ].map((item, index) => (
@@ -624,23 +608,31 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
             key={index}
             onClick={() => navigate(item.path, item.state ? { state: item.state } : undefined)}
             style={{
-              background: 'white',
-              borderRadius: '16px',
+              background: '#171717',
+              borderRadius: '14px',
               padding: '20px 16px',
               cursor: 'pointer',
-              border: '1px solid #f1f5f9',
+              border: '1px solid #262626',
               transition: 'all 0.2s',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start'
             }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#404040';
+              e.currentTarget.style.background = '#1f1f1f';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#262626';
+              e.currentTarget.style.background = '#171717';
+            }}
           >
             <div style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '12px',
-              background: item.bg,
-              color: item.color,
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: '#262626',
+              color: item.accent,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -649,16 +641,16 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
               {item.icon}
             </div>
             <div style={{
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: '500',
-              color: '#1e293b',
+              color: '#fafafa',
               marginBottom: '2px'
             }}>
               {item.title}
             </div>
             <div style={{
               fontSize: '12px',
-              color: '#94a3b8'
+              color: '#525252'
             }}>
               {item.subtitle}
             </div>
@@ -668,37 +660,37 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
 
       {/* Emergency Contact Banner */}
       <div style={{
-        background: '#fef2f2',
-        borderRadius: '16px',
+        background: 'rgba(239, 68, 68, 0.1)',
+        borderRadius: '14px',
         padding: '20px',
         display: 'flex',
         alignItems: 'center',
         gap: '16px',
-        border: '1px solid #fecaca'
+        border: '1px solid rgba(239, 68, 68, 0.2)'
       }}>
         <div style={{
-          width: '48px',
-          height: '48px',
+          width: '44px',
+          height: '44px',
           borderRadius: '12px',
           background: '#ef4444',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <Phone size={22} color="white" />
+          <Phone size={20} color="#fafafa" />
         </div>
         <div>
           <div style={{
             fontSize: '15px',
             fontWeight: '500',
-            color: '#dc2626',
+            color: '#ef4444',
             marginBottom: '4px'
           }}>
             Emergency Helpline
           </div>
           <div style={{
             fontSize: '13px',
-            color: '#b91c1c'
+            color: '#a3a3a3'
           }}>
             Call 112 for immediate assistance
           </div>

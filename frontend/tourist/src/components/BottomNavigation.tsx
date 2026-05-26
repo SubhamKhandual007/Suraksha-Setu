@@ -28,10 +28,10 @@ const BottomNavigation: React.FC = () => {
       width: 'calc(100% - 32px)',
       maxWidth: '420px',
       height: '72px',
-      background: 'rgba(255, 255, 255, 0.95)',
+      background: 'rgba(23, 23, 23, 0.95)',
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)',
-      boxShadow: '0 10px 40px -10px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.03)',
+      boxShadow: '0 10px 40px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)',
       zIndex: 2000,
       borderRadius: '20px',
       padding: '0 8px',
@@ -47,7 +47,7 @@ const BottomNavigation: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            color: isActive ? '#0d9488' : '#94a3b8',
+            color: isActive ? '#c9a87c' : '#525252',
             textDecoration: 'none',
             fontSize: '11px',
             fontWeight: isActive ? '600' : '500',
@@ -75,27 +75,33 @@ const BottomNavigation: React.FC = () => {
         <button
           onClick={() => navigate('/chat')}
           style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+            width: '52px',
+            height: '52px',
+            borderRadius: '14px',
+            background: '#c9a87c',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 8px 20px -4px rgba(13, 148, 136, 0.4)',
+            boxShadow: '0 8px 20px -4px rgba(201, 168, 124, 0.4)',
             marginTop: '-20px',
             transition: 'transform 0.2s ease, box-shadow 0.2s ease'
           }}
           title="Suraksha AI"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
         >
-          <MessageSquare size={24} color="white" />
+          <MessageSquare size={24} color="#0a0a0a" />
         </button>
         <span style={{
           fontSize: '11px',
           fontWeight: '600',
-          color: '#0d9488',
+          color: '#c9a87c',
           marginTop: '6px'
         }}>
           Chat
@@ -111,7 +117,7 @@ const BottomNavigation: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            color: isActive ? '#0d9488' : '#94a3b8',
+            color: isActive ? '#c9a87c' : '#525252',
             textDecoration: 'none',
             fontSize: '11px',
             fontWeight: isActive ? '600' : '500',

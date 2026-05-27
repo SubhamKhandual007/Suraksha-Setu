@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const { createServer } = require('http');
-require('dotenv').config(); 
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') }); 
 
 // Import database connection and routes
 const connectDB = require('./config/database');

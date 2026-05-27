@@ -267,7 +267,7 @@ const AdminDashboardScreen: React.FC = () => {
               color="inherit"
               sx={{ p: 0.5 }}
             >
-              <Avatar src="/assets/admin_photo.png" alt="Admin" sx={{ width: 32, height: 32 }} />
+              <Avatar src="/assets/admin_photo.webp" alt="Admin" sx={{ width: 32, height: 32 }} />
             </IconButton>
             <Menu
               anchorEl={anchorEl}

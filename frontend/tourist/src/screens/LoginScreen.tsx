@@ -102,8 +102,8 @@ const LoginScreen: React.FC = () => {
               <Shield color="white" size={40} />
             </div>
             <img 
-              src={role === 'admin' ? "/assets/admin_photo.png" : "/assets/tourist_photo.png"} 
-              alt="Login Banner" 
+              src={role === 'admin' ? "/assets/admin_photo.webp" : "/assets/tourist_photo.webp"} 
+              alt="Login safety portal banner graphic" 
               style={{ 
                 width: '100%', 
                 maxWidth: '300px', 
@@ -146,10 +146,11 @@ const LoginScreen: React.FC = () => {
 
           <form onSubmit={handleLogin}>
             <div className="input-group">
-              <label className="input-label">Email Address</label>
+              <label className="input-label" htmlFor="email-input">Email Address</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                 <input
+                  id="email-input"
                   type="email"
                   className="input-field"
                   style={{ paddingLeft: '50px' }}
@@ -161,10 +162,11 @@ const LoginScreen: React.FC = () => {
             </div>
 
             <div className="input-group">
-              <label className="input-label">Password</label>
+              <label className="input-label" htmlFor="password-input">Password</label>
               <div style={{ position: 'relative' }}>
                 <Lock size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                 <input
+                  id="password-input"
                   type={showPassword ? "text" : "password"}
                   className="input-field"
                   style={{ paddingLeft: '50px', paddingRight: '50px' }}
@@ -175,6 +177,7 @@ const LoginScreen: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   style={{
                     position: 'absolute',
                     right: '16px',

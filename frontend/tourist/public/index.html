@@ -29,13 +29,12 @@
     <link rel="dns-prefetch" href="https://tour-safe-6ce22.firebaseapp.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
 
-    <!-- Preload critical fonts -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
+    <!-- Load Google Fonts asynchronously for zero render-blocking -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"></noscript>
 
     <!-- Preload critical assets -->
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/tourist_landing.png" fetchpriority="high">
+    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/tourist_landing.webp" fetchpriority="high">
     <link rel="preload" as="image" href="%PUBLIC_URL%/logo192.png" fetchpriority="high">
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />

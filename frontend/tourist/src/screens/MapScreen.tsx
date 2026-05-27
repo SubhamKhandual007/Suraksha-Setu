@@ -7,7 +7,7 @@ import { MapPin, Navigation, ShieldAlert, Phone, Hospital, Hotel, Loader2, Alert
 import { locationService } from '../services/locationService';
 import { overpassService, OverpassElement } from '../services/overpassService';
 import { LocationData } from '../types';
-import markerPremium from '../assets/map-marker-premium.png';
+import markerPremium from '../assets/map-marker-premium.webp';
 
 // Fix for default marker icons in Leaflet with React
 // @ts-ignore
@@ -342,9 +342,9 @@ const MapScreen: React.FC = () => {
           <button 
             onClick={() => toggleFilter('hospital')}
             style={{ 
-              background: filters.hospital ? 'white' : 'rgba(255,255,255,0.7)', 
-              border: 'none', 
-              padding: '10px', 
+              background: filters.hospital ? 'var(--primary)' : 'rgba(15, 23, 42, 0.85)', 
+              border: '1px solid rgba(255,255,255,0.08)', 
+              padding: '10px 14px', 
               borderRadius: '12px', 
               boxShadow: 'var(--shadow-md)', 
               display: 'flex', 
@@ -353,19 +353,20 @@ const MapScreen: React.FC = () => {
               fontSize: '13px', 
               fontWeight: '700',
               cursor: 'pointer',
-              color: filters.hospital ? 'var(--dark)' : '#94a3b8',
+              color: 'var(--text-primary)',
+              backdropFilter: 'blur(10px)',
               transition: 'all 0.2s'
             }}
           >
-            <div style={{ opacity: filters.hospital ? 1 : 0.5 }}>🏥</div>
+            <div style={{ opacity: filters.hospital ? 1 : 0.6 }}>🏥</div>
             Hospitals
           </button>
           <button 
             onClick={() => toggleFilter('hotel')}
             style={{ 
-              background: filters.hotel ? 'white' : 'rgba(255,255,255,0.7)', 
-              border: 'none', 
-              padding: '10px', 
+              background: filters.hotel ? 'var(--primary)' : 'rgba(15, 23, 42, 0.85)', 
+              border: '1px solid rgba(255,255,255,0.08)', 
+              padding: '10px 14px', 
               borderRadius: '12px', 
               boxShadow: 'var(--shadow-md)', 
               display: 'flex', 
@@ -374,19 +375,20 @@ const MapScreen: React.FC = () => {
               fontSize: '13px', 
               fontWeight: '700',
               cursor: 'pointer',
-              color: filters.hotel ? 'var(--dark)' : '#94a3b8',
+              color: 'var(--text-primary)',
+              backdropFilter: 'blur(10px)',
               transition: 'all 0.2s'
             }}
           >
-            <div style={{ opacity: filters.hotel ? 1 : 0.5 }}>🏨</div>
+            <div style={{ opacity: filters.hotel ? 1 : 0.6 }}>🏨</div>
             Hotels
           </button>
           <button 
             onClick={() => toggleFilter('police')}
             style={{ 
-              background: filters.police ? 'white' : 'rgba(255,255,255,0.7)', 
-              border: 'none', 
-              padding: '10px', 
+              background: filters.police ? 'var(--primary)' : 'rgba(15, 23, 42, 0.85)', 
+              border: '1px solid rgba(255,255,255,0.08)', 
+              padding: '10px 14px', 
               borderRadius: '12px', 
               boxShadow: 'var(--shadow-md)', 
               display: 'flex', 
@@ -395,11 +397,12 @@ const MapScreen: React.FC = () => {
               fontSize: '13px', 
               fontWeight: '700',
               cursor: 'pointer',
-              color: filters.police ? 'var(--dark)' : '#94a3b8',
+              color: 'var(--text-primary)',
+              backdropFilter: 'blur(10px)',
               transition: 'all 0.2s'
             }}
           >
-            <div style={{ opacity: filters.police ? 1 : 0.5 }}>🚔</div>
+            <div style={{ opacity: filters.police ? 1 : 0.6 }}>🚔</div>
             Police
           </button>
         </div>
@@ -414,12 +417,12 @@ const MapScreen: React.FC = () => {
           flexDirection: 'column', 
           gap: '8px' 
         }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.95)', padding: '8px 12px', borderRadius: '12px', boxShadow: 'var(--shadow-md)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: '700', backdropFilter: 'blur(5px)' }}>
+          <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.08)', padding: '8px 12px', borderRadius: '12px', boxShadow: 'var(--shadow-md)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: '700', backdropFilter: 'blur(10px)', color: 'var(--text-primary)' }}>
             <img src={markerPremium} alt="Danger" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
             High Risk
           </div>
-          <div style={{ background: 'rgba(255, 255, 255, 0.95)', padding: '8px 12px', borderRadius: '12px', boxShadow: 'var(--shadow-md)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: '700', backdropFilter: 'blur(5px)' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }}></div>
+          <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.08)', padding: '8px 12px', borderRadius: '12px', boxShadow: 'var(--shadow-md)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: '700', backdropFilter: 'blur(10px)', color: 'var(--text-primary)' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }}></div>
             Safe Zone
           </div>
         </div>
@@ -428,11 +431,11 @@ const MapScreen: React.FC = () => {
         <div style={{ position: 'absolute', bottom: '20px', left: '20px', right: '20px', zIndex: 1000, display: 'flex', gap: '12px' }}>
           <button 
             className="btn btn-primary" 
-            style={{ flex: 1, boxShadow: '0 10px 30px rgba(99, 102, 241, 0.3)', padding: '14px', borderRadius: '16px' }}
+            style={{ flex: 1, boxShadow: 'var(--neon-glow-primary)', padding: '14px', borderRadius: '16px' }}
             onClick={() => setShowSafeRoute(!showSafeRoute)}
           >
             {showSafeRoute ? <CheckCircle2 size={18} /> : <Navigation size={18} />}
-            {showSafeRoute ? 'Safe Path Shown' : 'Find Safe Path'}
+            {showSafeRoute ? 'Safe Path Active' : 'Calculate Safe Path'}
           </button>
         </div>
 

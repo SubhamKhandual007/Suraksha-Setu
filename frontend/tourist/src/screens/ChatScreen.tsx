@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Suraksha.module.css";
 import Picker from "emoji-picker-react";
 import { tokenManager } from "../services/api";
-import surakshaAvatar from "../assets/logo.png"; 
+import surakshaAvatar from "../assets/logo.webp"; 
 import { 
   Trash2, 
   Paperclip, 
@@ -25,6 +25,7 @@ const ChatScreen: React.FC = () => {
 
   const [userData, setUserData] = useState<any>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const recognition = useRef<any>(null);
 
@@ -134,12 +135,12 @@ Kahin bhi problem ho — bas bolo!`;
   };
 
   // 💬 Send Message
-  const sendMessage = async (input = userInput) => {
-    if (!input.trim()) return;
+  const sendMessage = async (input = userInput, attachedImage: string | null = null) => {
+    if (!input.trim() && !attachedImage) return;
 
     const timestamp = getTime();
 
-    setMessages((prev) => [...prev, { text: input, sender: "user", timestamp }]);
+    setMessages((prev) => [...prev, { text: input, sender: "user", timestamp, image: attachedImage }]);
     setUserInput("");
     setIsTyping(true);
 
@@ -230,6 +231,21 @@ Kahin bhi problem ho — bas bolo!`;
     setIsTyping(false);
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          sendMessage("Uploaded an image", reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        sendMessage(`Uploaded file: ${file.name}`);
+      }
+    }
+  };
+
   const clearChat = () => {
     setMessages([]);
     setConversationHistory([]);
@@ -253,7 +269,14 @@ Kahin bhi problem ho — bas bolo!`;
       <div className={styles.chatBox}>
         {messages.map((msg, i) => (
           <div key={i} className={msg.sender === "user" ? styles.userMessage : styles.aiMessage}>
-            {msg.text}
+            {msg.image && (
+              <img 
+                src={msg.image} 
+                alt="uploaded" 
+                style={{ width: '100%', maxWidth: '250px', borderRadius: '12px', marginBottom: '8px', display: 'block' }} 
+              />
+            )}
+            {msg.text && <span>{msg.text}</span>}
             <span className={styles.timestamp}>{msg.timestamp}</span>
           </div>
         ))}
@@ -280,9 +303,16 @@ Kahin bhi problem ho — bas bolo!`;
             <Smile size={24} />
           </div>
           
-          <div className={styles.attachmentIcon}>
+          <div className={styles.attachmentIcon} onClick={() => fileInputRef.current?.click()}>
             <Paperclip size={24} />
           </div>
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileUpload} 
+            style={{ display: 'none' }} 
+            accept="image/*,.pdf,.doc,.docx"
+          />
 
           {showEmojiPicker && (
             <div className={styles.emojiPicker}>

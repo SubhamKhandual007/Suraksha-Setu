@@ -112,8 +112,8 @@ const RegisterScreen: React.FC = () => {
         }}>
           <div style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
             <img 
-              src={role === 'admin' ? "/assets/admin_photo.png" : "/assets/tourist_photo.png"} 
-              alt="Registration Banner" 
+              src={role === 'admin' ? "/assets/admin_photo.webp" : "/assets/tourist_photo.webp"} 
+              alt="Registration safety gateway banner illustration" 
               style={{ 
                 width: '100%', 
                 maxWidth: '350px', 
@@ -151,7 +151,7 @@ const RegisterScreen: React.FC = () => {
             <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#1a237e', marginBottom: '10px' }}>
               Welcome to the Smart Tourist Safety System
             </h1>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>
+            <p style={{ color: '#475569', fontSize: '15px' }}>
               Create your Tourist Profile to stay safe and connected during your journey.
             </p>
           </div>
@@ -176,10 +176,11 @@ const RegisterScreen: React.FC = () => {
           <form onSubmit={handleRegister}>
             {/* Full Name */}
             <div className="input-group">
-              <label className="input-label">Full Name</label>
+              <label className="input-label" htmlFor="register-name">Full Name</label>
               <div style={{ position: 'relative' }}>
                 <User size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                 <input 
+                  id="register-name"
                   type="text" 
                   name="name" 
                   className="input-field" 
@@ -193,10 +194,11 @@ const RegisterScreen: React.FC = () => {
 
             {/* Email Address */}
             <div className="input-group">
-              <label className="input-label">Email Address</label>
+              <label className="input-label" htmlFor="register-email">Email Address</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                 <input 
+                  id="register-email"
                   type="email" 
                   name="email" 
                   className="input-field" 
@@ -210,7 +212,7 @@ const RegisterScreen: React.FC = () => {
 
             {/* Phone Number */}
             <div className="input-group">
-              <label className="input-label">Phone Number</label>
+              <label className="input-label" htmlFor="register-phone">Phone Number</label>
               <div style={{ position: 'relative' }}>
                 <div style={{ 
                   position: 'absolute', 
@@ -230,6 +232,7 @@ const RegisterScreen: React.FC = () => {
                   <span style={{ color: 'var(--border-color)' }}>|</span>
                 </div>
                 <input 
+                  id="register-phone"
                   type="tel" 
                   name="phone" 
                   className="input-field" 
@@ -244,10 +247,11 @@ const RegisterScreen: React.FC = () => {
             {/* Emergency Contact */}
             {role === 'tourist' && (
               <div className="input-group">
-                <label className="input-label">Emergency Contact Number</label>
+                <label className="input-label" htmlFor="register-emergency">Emergency Contact Number</label>
                 <div style={{ position: 'relative' }}>
                   <Heart size={20} color="var(--danger)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input 
+                    id="register-emergency"
                     type="tel" 
                     name="emergencyContact" 
                     className="input-field" 
@@ -263,10 +267,11 @@ const RegisterScreen: React.FC = () => {
             {/* Password Section */}
             <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
               <div className="input-group" style={{ flex: 1 }}>
-                <label className="input-label">Password</label>
+                <label className="input-label" htmlFor="register-password">Password</label>
                 <div style={{ position: 'relative' }}>
                   <Lock size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input 
+                    id="register-password"
                     type={showPassword ? "text" : "password"} 
                     name="password" 
                     className="input-field" 
@@ -278,6 +283,7 @@ const RegisterScreen: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                     style={{
                       position: 'absolute',
                       right: '12px',
@@ -297,10 +303,11 @@ const RegisterScreen: React.FC = () => {
                 </div>
               </div>
               <div className="input-group" style={{ flex: 1 }}>
-                <label className="input-label">Confirm</label>
+                <label className="input-label" htmlFor="register-confirm">Confirm</label>
                 <div style={{ position: 'relative' }}>
                   <Lock size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input 
+                    id="register-confirm"
                     type={showPassword ? "text" : "password"} 
                     name="confirmPassword" 
                     className="input-field" 

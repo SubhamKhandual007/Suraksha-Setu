@@ -76,10 +76,11 @@ const ResetPasswordScreen: React.FC = () => {
           ) : (
             <form onSubmit={handleResetPassword}>
               <div className="input-group">
-                <label className="input-label">New Password</label>
+                <label className="input-label" htmlFor="reset-new-password">New Password</label>
                 <div style={{ position: 'relative' }}>
                   <Lock size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input
+                    id="reset-new-password"
                     type={showPassword ? "text" : "password"}
                     className="input-field"
                     style={{ paddingLeft: '50px', paddingRight: '50px' }}
@@ -91,6 +92,7 @@ const ResetPasswordScreen: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                     style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -99,10 +101,11 @@ const ResetPasswordScreen: React.FC = () => {
               </div>
 
               <div className="input-group">
-                <label className="input-label">Confirm New Password</label>
+                <label className="input-label" htmlFor="reset-confirm-password">Confirm New Password</label>
                 <div style={{ position: 'relative' }}>
                   <Lock size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input
+                    id="reset-confirm-password"
                     type={showPassword ? "text" : "password"}
                     className="input-field"
                     style={{ paddingLeft: '50px' }}

@@ -83,10 +83,11 @@ const ForgotPasswordScreen: React.FC = () => {
           ) : (
             <form onSubmit={handleRequestToken}>
               <div className="input-group">
-                <label className="input-label">Email Address</label>
+                <label className="input-label" htmlFor="forgot-email">Email Address</label>
                 <div style={{ position: 'relative' }}>
                   <Mail size={20} color="var(--primary)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.7 }} />
                   <input
+                    id="forgot-email"
                     type="email"
                     className="input-field"
                     style={{ paddingLeft: '50px' }}

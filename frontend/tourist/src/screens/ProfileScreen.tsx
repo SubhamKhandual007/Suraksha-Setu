@@ -4,7 +4,7 @@ import { User, Mail, Phone, Globe, Shield, PhoneCall, LogOut, Settings, Bell, Sh
 import { tokenManager } from '../services/api';
 import { refreshAuthStatus } from '../hooks/useAuth';
 
-import profilePic from '../assets/user_profile.png';
+import profilePic from '../assets/user_profile.webp';
 
 const ProfileScreen: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);

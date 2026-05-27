@@ -28,17 +28,17 @@ import {
 import { tokenManager } from '../services/api';
 
 // Importing assets
-import logoImg from '../assets/logo.png';
-import idImg from '../assets/dashboard/id.png';
-import emergencyImg from '../assets/dashboard/emergency.png';
-import mapImg from '../assets/dashboard/map.png';
-import hospitalImg from '../assets/dashboard/hospital.png';
-import ambulanceImg from '../assets/dashboard/ambulance.jpg';
-import profileImg from '../assets/user_profile.png';
-import policeStationImg from '../assets/dashboard/police_station.png';
-import paymentsImg from '../assets/dashboard/payments.png';
-import markerPremium from '../assets/map-marker-premium.png';
-import communityChatImg from '../assets/community_chat.png';
+import logoImg from '../assets/logo.webp';
+import idImg from '../assets/dashboard/id.webp';
+import emergencyImg from '../assets/dashboard/emergency.webp';
+import mapImg from '../assets/dashboard/map.webp';
+import hospitalImg from '../assets/dashboard/hospital.webp';
+import ambulanceImg from '../assets/dashboard/ambulance.webp';
+import profileImg from '../assets/user_profile.webp';
+import policeStationImg from '../assets/dashboard/police_station.webp';
+import paymentsImg from '../assets/dashboard/payments.webp';
+import markerPremium from '../assets/map-marker-premium.webp';
+import communityChatImg from '../assets/community_chat.webp';
 import BottomNavigation from '../components/BottomNavigation';
 
 // Alias for profile picture usage in detailed view
@@ -52,68 +52,68 @@ const DashboardCard: React.FC<{
   onClick: () => void;
   btnText: string;
 }> = ({ title, subtitle, image, icon, onClick, btnText }) => (
-  <div className="card" style={{ 
+  <div className="card" onClick={onClick} style={{ 
     padding: '24px', 
     display: 'flex', 
     flexDirection: 'column', 
     gap: '15px',
-    background: 'white',
-    border: '1px solid #f1f5f9',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    background: 'var(--card-bg)',
+    backdropFilter: 'blur(15px)',
+    WebkitBackdropFilter: 'blur(15px)',
+    border: '1px solid var(--border-color)',
+    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
     cursor: 'pointer'
   }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <div style={{ 
-          background: '#f1f5f9', 
+          background: 'rgba(99, 102, 241, 0.1)', 
           padding: '10px', 
           borderRadius: '12px', 
-          color: 'var(--primary)',
+          color: '#818cf8',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          boxShadow: '0 0 10px rgba(99, 102, 241, 0.2)'
         }}>
           {icon}
         </div>
-        <h3 style={{ fontSize: '17px', fontWeight: '800', margin: 0, color: '#1e293b' }}>{title}</h3>
+        <h3 style={{ fontSize: '17px', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>{title}</h3>
       </div>
-      <div style={{ color: '#cbd5e1' }}>
+      <div style={{ color: 'var(--text-secondary)' }}>
         <ChevronRight size={18} />
       </div>
     </div>
     
-    <p style={{ fontSize: '13px', color: '#64748b', margin: 0, lineHeight: '1.5' }}>{subtitle}</p>
+    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.5' }}>{subtitle}</p>
     
     <div style={{ 
       width: '100%', 
       height: '150px', 
       borderRadius: '16px', 
       overflow: 'hidden',
-      background: '#f8fafc',
+      background: 'rgba(15, 23, 42, 0.4)',
       marginTop: '5px',
-      border: '1px solid #f1f5f9'
+      border: '1px solid var(--border-color)'
     }}>
-      <img src={image} alt={title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
+      <img src={image} alt={title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8, filter: 'brightness(0.9) contrast(1.1)' }} />
     </div>
 
     <button 
-      onClick={onClick}
-      className="btn" 
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      className="btn btn-primary" 
       style={{ 
         width: '100%', 
         padding: '12px', 
         fontSize: '14px', 
         fontWeight: '700',
         marginTop: '10px',
-        background: '#f8fafc',
-        color: '#1e293b',
-        border: '1px solid #e2e8f0',
         borderRadius: '12px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
-        transition: 'all 0.2s'
+        border: '1px solid rgba(255,255,255,0.08)'
       }}
     >
       {btnText}
@@ -305,7 +305,9 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
     <div className="fade-in" style={{ paddingBottom: '20px' }}>
       {/* Welcome Section */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)', 
+        background: 'rgba(30, 41, 59, 0.45)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)', 
         borderRadius: '28px', 
         padding: '30px', 
         color: 'white', 
@@ -313,40 +315,42 @@ const DashboardScreen: React.FC<{ mode?: 'grid' | 'detailed' }> = ({ mode = 'gri
         display: 'flex',
         alignItems: 'center',
         gap: '20px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+        boxShadow: 'var(--shadow-lg), var(--neon-glow-primary)',
+        border: '1px solid var(--border-color)',
         position: 'relative',
         overflow: 'hidden'
       }}>
         {/* Abstract Background Element */}
-        <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '150px', height: '150px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}></div>
+        <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '150px', height: '150px', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '50%' }}></div>
         
         <div style={{ 
           width: '85px', 
           height: '85px', 
           borderRadius: '22px', 
-          background: 'white', 
+          background: 'rgba(15, 23, 42, 0.6)', 
           padding: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
           position: 'relative',
           zIndex: 1
         }}>
           <img src={logoImg} alt="Suraksha Setu" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
         <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
-          <h2 style={{ fontSize: '26px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>Suraksha Setu</h2>
-          <p style={{ fontSize: '15px', opacity: 0.8, margin: '4px 0 0' }}>Welcome, <span style={{ color: '#60a5fa', fontWeight: '800' }}>{userData?.name || 'Tourist'}</span></p>
-          <div style={{ fontSize: '12px', marginTop: '8px', opacity: 0.6 }}>Your personal safety companion</div>
+          <h2 style={{ fontSize: '26px', fontWeight: '950', margin: 0, letterSpacing: '-0.5px', background: 'linear-gradient(135deg, #fff 0%, #818cf8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Suraksha Setu</h2>
+          <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: '4px 0 0' }}>Welcome, <span style={{ color: '#818cf8', fontWeight: '800' }}>{userData?.name || 'Tourist'}</span></p>
+          <div style={{ fontSize: '12px', marginTop: '8px', color: 'var(--text-secondary)' }}>Your personal safety companion</div>
         </div>
       </section>
 
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: '900', color: 'var(--dark)', letterSpacing: '2px', textTransform: 'uppercase' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: '900', color: 'var(--text-primary)', letterSpacing: '2px', textTransform: 'uppercase', background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Dashboard
         </h2>
-        <div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '10px auto', borderRadius: '2px' }}></div>
+        <div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '10px auto', borderRadius: '2px', boxShadow: 'var(--neon-glow-primary)' }}></div>
       </header>
 
       <div style={{ 

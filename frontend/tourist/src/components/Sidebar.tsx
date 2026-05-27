@@ -115,7 +115,7 @@ const Sidebar: React.FC = () => {
             }}>
               {isAdmin ? (
                 <img 
-                  src="/assets/admin_photo.png" 
+                  src="/assets/admin_photo.webp" 
                   alt="Admin Profile" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => {

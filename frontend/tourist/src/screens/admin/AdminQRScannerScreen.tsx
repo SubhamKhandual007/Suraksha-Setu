@@ -92,10 +92,20 @@ const AdminQRScannerScreen: React.FC = () => {
               return;
             }
           } catch {
-            // Not JSON, treat as raw Digital ID string
+            // Not JSON, treat as raw Digital ID string or URL
           }
-          setScannedId(code.data);
-          verify(code.data);
+
+          let idToVerify = code.data;
+          // If it is a URL, parse the digitalId out of it (e.g. /verify/TIDXXXX)
+          if (idToVerify.includes('/verify/')) {
+            const parts = idToVerify.split('/verify/');
+            if (parts.length > 1) {
+              idToVerify = parts[1].split('?')[0].split('#')[0].trim();
+            }
+          }
+
+          setScannedId(idToVerify);
+          verify(idToVerify);
         } else {
           setError('No QR code found in the uploaded image. Please try a clearer image.');
         }

@@ -16,7 +16,7 @@ const VerificationProfileScreen: React.FC = () => {
       try {
         const response = await authAPI.verifyDigitalId(digitalId);
         if (response.success) {
-          setUserData(response.user);
+          setUserData(response.tourist || response.user);
         } else {
           setError(response.message || 'Verification failed');
         }
@@ -114,13 +114,59 @@ const VerificationProfileScreen: React.FC = () => {
             </div>
           </div>
 
+          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ background: '#e0f2fe', color: '#0284c7', padding: '10px', borderRadius: '12px' }}>
+              <CheckCircle size={20} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Scan / Verification Time</div>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b' }}>
+                {userData.lastVerified ? (
+                  new Date(userData.lastVerified).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })
+                ) : (
+                  new Date().toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+
           <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
             <div style={{ background: '#f1f5f9', color: '#64748b', padding: '10px', borderRadius: '12px' }}>
               <Calendar size={20} />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Registered On</div>
-              <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b' }}>{new Date(userData.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b' }}>
+                {userData.registrationTimestamp || userData.createdAt ? (
+                  new Date(userData.registrationTimestamp || userData.createdAt).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })
+                ) : (
+                  'N/A'
+                )}
+              </div>
             </div>
           </div>
         </div>

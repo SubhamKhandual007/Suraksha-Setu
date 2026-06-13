@@ -158,12 +158,46 @@ const VerificationScreen: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ background: '#e0f2fe', padding: '10px', borderRadius: '12px', color: '#0284c7' }}>
+              <CheckCircle size={20} />
+            </div>
+            <div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '600' }}>Scan / Verification Time</div>
+              <div style={{ fontSize: '15px', fontWeight: '600' }}>
+                {new Date(tourist.lastVerified || Date.now()).toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: true
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <div style={{ background: '#f8fafc', padding: '10px', borderRadius: '12px', color: '#64748b' }}>
               <Calendar size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '600' }}>Registration Date</div>
-              <div style={{ fontSize: '15px', fontWeight: '600' }}>{new Date(tourist.registrationTimestamp).toLocaleDateString()}</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '600' }}>Registration Date & Time</div>
+              <div style={{ fontSize: '15px', fontWeight: '600' }}>
+                {tourist.registrationTimestamp || tourist.createdAt ? (
+                  new Date(tourist.registrationTimestamp || tourist.createdAt).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })
+                ) : (
+                  'N/A'
+                )}
+              </div>
             </div>
           </div>
         </div>

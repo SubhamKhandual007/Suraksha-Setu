@@ -101,7 +101,7 @@ const TouristCard: React.FC<TouristCardProps> = ({ user, onViewQR }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
           <Box sx={{ p: 1, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e2e8f0' }}>
             <QRCodeSVG
-              value={user.digitalId}
+              value={`${window.location.origin}/verify/${user.digitalId}`}
               size={52}
               level="M"
               includeMargin={false}
@@ -132,12 +132,7 @@ const TouristCard: React.FC<TouristCardProps> = ({ user, onViewQR }) => {
 const QRDialog: React.FC<{ user: User | null; onClose: () => void }> = ({ user, onClose }) => {
   if (!user) return null;
 
-  const qrValue = JSON.stringify({
-    digitalId: user.digitalId,
-    name: user.name,
-    phone: user.phone,
-    issuedAt: Date.now(),
-  });
+  const qrValue = `${window.location.origin}/verify/${user.digitalId}`;
 
   const downloadQR = () => {
     const svg = document.getElementById('tourist-qr-full');

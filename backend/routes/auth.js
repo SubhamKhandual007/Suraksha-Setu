@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const admin = require('firebase-admin');
 const User = require('../models/User');
-const { auth, adminOnly } = require('../middleware/auth');
+const { auth, adminOnly, invalidateUserCache } = require('../middleware/auth');
 const verificationService = require('../services/verificationService');
 
 const router = express.Router();
@@ -57,10 +57,10 @@ router.post('/register', [
 
     const { name, email, password, phone, emergencyContact, role = 'tourist' } = req.body;
 
-    // Check for existing user
-    let user = await User.findOne({ email });
+    // Check for existing user — use lean + select only _id for speed
+    const existingUser = await User.findOne({ email }).select('_id').lean();
 
-    if (user) {
+    if (existingUser) {
       return res.status(400).json({
         success: false,
         message: 'User already exists with this email'
@@ -83,7 +83,7 @@ router.post('/register', [
       }];
     }
 
-    user = new User(userFields);
+    const user = new User(userFields);
 
     await user.save();
 
@@ -133,10 +133,9 @@ router.post('/login', [
     }
 
     const { email, password } = req.body;
-    console.log('Login attempt:', { email, passwordLength: password.length });
 
-    // Find user by email
-    const user = await User.findOne({ email }).select('+password');
+    // Find user by email — only select fields we need for login check
+    const user = await User.findOne({ email }).select('+password name email phone emergencyContacts role digitalId isActive createdAt');
 
     if (!user) {
       return res.status(401).json({
@@ -209,7 +208,7 @@ router.post('/firebase-login', async (req, res) => {
     const decodedToken = await admin.auth().verifyIdToken(token);
     const { name, email, picture, uid: firebaseUid } = decodedToken;
 
-    // Find or create user
+    // Find or create user — use lean for read, only fetch if exists
     let user = await User.findOne({ email });
 
     if (!user) {
@@ -228,6 +227,7 @@ router.post('/firebase-login', async (req, res) => {
       if (!user.firebaseUid) {
         user.firebaseUid = firebaseUid;
         await user.save();
+        invalidateUserCache(user._id.toString());
       }
       
       // Ensure role matches for admin portal if specified
@@ -282,7 +282,7 @@ router.get('/me', async (req, res) => {
 
     // Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
+    const user = await User.findById(decoded.id).select('-password').lean();
 
     if (!user) {
       return res.status(401).json({
@@ -310,7 +310,7 @@ router.get('/me', async (req, res) => {
 // @access  Private/Admin
 router.get('/users', auth, adminOnly, async (req, res) => {
   try {
-    const users = await User.find({}).select('-password');
+    const users = await User.find({}).select('-password').lean();
     res.json({
       success: true,
       count: users.length,
@@ -390,6 +390,7 @@ router.post('/forgot-password', async (req, res) => {
     user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     await user.save({ validateBeforeSave: false });
+    invalidateUserCache(user._id.toString());
 
     // In a real app, you would send an email here. 
     // Since we don't have an email server, we'll return the token in the response for demo/development.
@@ -439,6 +440,7 @@ router.post('/reset-password/:token', async (req, res) => {
     user.resetPasswordExpire = undefined;
 
     await user.save();
+    invalidateUserCache(user._id.toString());
 
     res.json({
       success: true,

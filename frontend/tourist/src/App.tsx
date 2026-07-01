@@ -1,16 +1,38 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, Suspense, lazy, memo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth, refreshAuthStatus } from './hooks/useAuth';
+
+// Eagerly import Sidebar since it's always shown for authenticated users
 import Sidebar from './components/Sidebar';
 
-// Lazy loaded screens
+// Lazy loaded screens — split into logical groups
+// Auth screens (loaded first interaction)
 const LoginScreen = lazy(() => import('./screens/LoginScreen'));
 const RegisterScreen = lazy(() => import('./screens/RegisterScreen'));
+const ForgotPasswordScreen = lazy(() => import('./screens/ForgotPasswordScreen'));
+const ResetPasswordScreen = lazy(() => import('./screens/ResetPasswordScreen'));
 
+// Core screens (most used — prefetched)
 const DashboardScreen = lazy(() => import('./screens/DashboardScreen'));
+const LandingScreen = lazy(() => import('./screens/LandingScreen'));
+
+// Secondary screens
 const DigitalIDScreen = lazy(() => import('./screens/DigitalIDScreen'));
 const EmergencyAlertScreen = lazy(() => import('./screens/EmergencyAlertScreen'));
-const LandingScreen = lazy(() => import('./screens/LandingScreen'));
+const MapScreen = lazy(() => import('./screens/MapScreen'));
+const ProfileScreen = lazy(() => import('./screens/ProfileScreen'));
+const VerificationScreen = lazy(() => import('./screens/VerificationScreen'));
+const ChatScreen = lazy(() => import('./screens/ChatScreen'));
+const HotelListingScreen = lazy(() => import('./screens/HotelListingScreen'));
+const PaymentHistoryScreen = lazy(() => import('./screens/PaymentHistoryScreen'));
+const AmbulanceBookingScreen = lazy(() => import('./screens/AmbulanceBookingScreen'));
+const VerificationProfileScreen = lazy(() => import('./screens/VerificationProfileScreen'));
+const ReportIncidentScreen = lazy(() => import('./screens/ReportIncidentScreen'));
+const EmergencyServicesScreen = lazy(() => import('./screens/EmergencyServicesScreen'));
+const CommunityChatScreen = lazy(() => import('./screens/CommunityChatScreen'));
+const ActivityLogScreen = lazy(() => import('./screens/ActivityLogScreen'));
+
+// Admin screens (loaded only when admin navigates)
 const AdminDashboardScreen = lazy(() => import('./screens/AdminDashboardScreen'));
 const AdminTouristsScreen = lazy(() => import('./screens/admin/AdminTouristsScreen'));
 const AdminSOSScreen = lazy(() => import('./screens/admin/AdminSOSScreen'));
@@ -22,49 +44,38 @@ const AdminReportsScreen = lazy(() => import('./screens/admin/AdminReportsScreen
 const AdminAnalyticsScreen = lazy(() => import('./screens/admin/AdminAnalyticsScreen'));
 const AdminSettingsScreen = lazy(() => import('./screens/admin/AdminSettingsScreen'));
 const AdminIncidentReportsScreen = lazy(() => import('./screens/admin/AdminIncidentReportsScreen'));
-const ActivityLogScreen = lazy(() => import('./screens/ActivityLogScreen'));
 
+// BottomNavigation lazy — only used on mobile layout
 const BottomNavigation = lazy(() => import('./components/BottomNavigation'));
-const MapScreen = lazy(() => import('./screens/MapScreen'));
-const ProfileScreen = lazy(() => import('./screens/ProfileScreen'));
-const VerificationScreen = lazy(() => import('./screens/VerificationScreen'));
-const ChatScreen = lazy(() => import('./screens/ChatScreen'));
-const HotelListingScreen = lazy(() => import('./screens/HotelListingScreen'));
-const PaymentHistoryScreen = lazy(() => import('./screens/PaymentHistoryScreen'));
-const AmbulanceBookingScreen = lazy(() => import('./screens/AmbulanceBookingScreen'));
-const VerificationProfileScreen = lazy(() => import('./screens/VerificationProfileScreen'));
-const ReportIncidentScreen = lazy(() => import('./screens/ReportIncidentScreen'));
-const EmergencyServicesScreen = lazy(() => import('./screens/EmergencyServicesScreen'));
-const ForgotPasswordScreen = lazy(() => import('./screens/ForgotPasswordScreen'));
-const ResetPasswordScreen = lazy(() => import('./screens/ResetPasswordScreen'));
-const CommunityChatScreen = lazy(() => import('./screens/CommunityChatScreen'));
 
-const MainLayout = () => {
+const MainLayout = memo(() => {
   return (
     <div className="web-layout">
       <Sidebar />
       <div className="main-content">
-        <Suspense fallback={
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <div className="spinner"></div>
-          </div>
-        }>
+        <Suspense fallback={<InlineLoader />}>
           <Outlet />
         </Suspense>
       </div>
     </div>
   );
-};
+});
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+// Lightweight inline loader — smaller DOM, no full-screen overlay
+const InlineLoader = memo(() => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div className="spinner"></div>
+  </div>
+));
+
+// Memoized ProtectedRoute — uses synchronous auth check, no loading flash
+const ProtectedRoute = memo(({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading || isAuthenticated === null) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div className="spinner"></div>
-      </div>
-    );
+  // With synchronous auth initialization, loading should be false immediately.
+  // Only show spinner if auth state is truly unknown (shouldn't happen in practice)
+  if (loading && isAuthenticated === null) {
+    return <InlineLoader />;
   }
 
   if (!isAuthenticated) {
@@ -72,22 +83,21 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   return <>{children}</>;
-};
-
-const FallbackLoader = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <div className="spinner"></div>
-  </div>
-);
+});
 
 const App: React.FC = () => {
   useEffect(() => {
-    refreshAuthStatus();
+    // Prefetch dashboard screen after initial render
+    const prefetchTimer = setTimeout(() => {
+      import('./screens/DashboardScreen');
+    }, 1000);
+    
+    return () => clearTimeout(prefetchTimer);
   }, []);
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<FallbackLoader />}>
+      <Suspense fallback={<InlineLoader />}>
         <Routes>
             <Route path="/welcome" element={<LandingScreen />} />
             <Route path="/login" element={<LoginScreen />} />

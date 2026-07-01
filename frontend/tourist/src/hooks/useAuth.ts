@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { tokenManager } from '../services/api';
-import socketService from '../services/socketService';
 
 export interface AuthState {
   isAuthenticated: boolean | null;
@@ -12,44 +11,79 @@ let globalAuthState: AuthState = {
   isAuthenticated: null,
   loading: true,
 }
+let authInitialized = false;
 
 // Global function to update auth state and notify all listeners
 const updateGlobalAuthState = (newState: Partial<AuthState>) => {
+  const prev = globalAuthState;
   globalAuthState = { ...globalAuthState, ...newState };
-  authStateListeners.forEach(listener => listener(globalAuthState));
+  
+  // Only notify if state actually changed
+  if (prev.isAuthenticated !== globalAuthState.isAuthenticated || prev.loading !== globalAuthState.loading) {
+    // Use microtask to batch notifications
+    queueMicrotask(() => {
+      authStateListeners.forEach(listener => listener(globalAuthState));
+    });
+  }
 };
 
-// Global function to check auth status
+// Synchronous initial auth check — no DB call, just checks local storage
+const checkAuthSync = (): boolean => {
+  const token = tokenManager.getToken();
+  const userData = tokenManager.getUserData();
+  return !!(token && userData);
+};
+
+// Fast synchronous initialization — runs once, no network calls
+const initializeAuth = () => {
+  if (authInitialized) return;
+  authInitialized = true;
+  
+  const isAuthenticated = checkAuthSync();
+  globalAuthState = { isAuthenticated, loading: false };
+  
+  // Defer socket initialization to avoid blocking the auth check
+  if (isAuthenticated) {
+    const token = tokenManager.getToken();
+    if (token) {
+      // Lazy-load socket service to avoid circular dependency and reduce initial bundle
+      requestIdleCallback(() => {
+        import('../services/socketService').then(({ default: socketService }) => {
+          socketService.updateToken(token);
+        });
+      }, { timeout: 2000 });
+    }
+  }
+};
+
+// Run synchronous check immediately on module load
+initializeAuth();
+
+// Global function to check auth status (called on focus/login/register)
 const checkGlobalAuthStatus = async () => {
   try {
-    const token = tokenManager.getToken();
-    const userData = tokenManager.getUserData();
-    
-    const isUserAuthenticated = !!(token && userData);
+    const isUserAuthenticated = checkAuthSync();
     
     if (globalAuthState.isAuthenticated !== isUserAuthenticated) {
-      console.log('Auth status changed:', globalAuthState.isAuthenticated, '->', isUserAuthenticated);
-      
-      updateGlobalAuthState({ isAuthenticated: isUserAuthenticated });
+      updateGlobalAuthState({ isAuthenticated: isUserAuthenticated, loading: false });
       
       if (isUserAuthenticated) {
-        console.log('User authenticated, initializing socket...');
-        await socketService.updateToken(token!);
-        console.log('Socket.IO initialized with user token');
+        const token = tokenManager.getToken();
+        if (token) {
+          const { default: socketService } = await import('../services/socketService');
+          await socketService.updateToken(token);
+        }
       } else {
-        console.log('User not authenticated');
+        const { default: socketService } = await import('../services/socketService');
         socketService.disconnect();
       }
     }
   } catch (error) {
     console.error('Error checking auth status:', error);
     if (globalAuthState.isAuthenticated !== false) {
-      updateGlobalAuthState({ isAuthenticated: false });
+      updateGlobalAuthState({ isAuthenticated: false, loading: false });
+      const { default: socketService } = await import('../services/socketService');
       socketService.disconnect();
-    }
-  } finally {
-    if (globalAuthState.loading) {
-      updateGlobalAuthState({ loading: false });
     }
   }
 };
@@ -63,28 +97,41 @@ export const useAuth = (): AuthState => {
   const [authState, setAuthState] = useState<AuthState>(globalAuthState);
 
   const handleAuthStateChange = useCallback((newState: AuthState) => {
-    setAuthState(newState);
+    setAuthState(prev => {
+      // Avoid re-render if state hasn't changed
+      if (prev.isAuthenticated === newState.isAuthenticated && prev.loading === newState.loading) {
+        return prev;
+      }
+      return newState;
+    });
   }, []);
 
   useEffect(() => {
     // Add this component as a listener
     authStateListeners.push(handleAuthStateChange);
 
-    // Initialize auth check if this is the first component to mount
-    if (authStateListeners.length === 1) {
-      checkGlobalAuthStatus();
+    // Sync with current global state in case it changed
+    if (authState.isAuthenticated !== globalAuthState.isAuthenticated || 
+        authState.loading !== globalAuthState.loading) {
+      setAuthState(globalAuthState);
+    }
 
-      // Set up app state change listener
+    const isFirstListener = authStateListeners.length === 1;
+
+    if (isFirstListener) {
+      // Set up focus listener with debouncing
+      let focusTimeout: ReturnType<typeof setTimeout>;
       const handleFocus = () => {
-        checkGlobalAuthStatus();
+        clearTimeout(focusTimeout);
+        focusTimeout = setTimeout(() => checkGlobalAuthStatus(), 100);
       };
 
       window.addEventListener('focus', handleFocus);
 
-      // Cleanup function for the first component
       return () => {
         authStateListeners = authStateListeners.filter(listener => listener !== handleAuthStateChange);
         window.removeEventListener('focus', handleFocus);
+        clearTimeout(focusTimeout);
       };
     }
 
@@ -96,5 +143,18 @@ export const useAuth = (): AuthState => {
 
   return authState;
 };
+
+// requestIdleCallback polyfill for browsers that don't support it
+if (typeof window !== 'undefined' && !('requestIdleCallback' in window)) {
+  (window as any).requestIdleCallback = (cb: Function, options?: { timeout: number }) => {
+    const start = Date.now();
+    return setTimeout(() => {
+      cb({
+        didTimeout: false,
+        timeRemaining: () => Math.max(0, 50 - (Date.now() - start))
+      });
+    }, 1);
+  };
+}
 
 export default useAuth;

@@ -4,8 +4,41 @@ const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
 
 /**
+ * In-memory user cache to avoid hitting MongoDB on every authenticated request.
+ * Cache entry TTL: 5 minutes. Max entries: 500.
+ * This dramatically speeds up auth middleware for repeat requests.
+ */
+const USER_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const USER_CACHE_MAX = 500;
+const userCache = new Map();
+
+const getCachedUser = (userId) => {
+  const entry = userCache.get(userId);
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > USER_CACHE_TTL) {
+    userCache.delete(userId);
+    return null;
+  }
+  return entry.user;
+};
+
+const setCachedUser = (userId, user) => {
+  // Evict oldest entries if cache is full
+  if (userCache.size >= USER_CACHE_MAX) {
+    const oldestKey = userCache.keys().next().value;
+    userCache.delete(oldestKey);
+  }
+  userCache.set(userId, { user, timestamp: Date.now() });
+};
+
+const invalidateUserCache = (userId) => {
+  userCache.delete(userId);
+};
+
+/**
  * JWT Authentication Middleware
  * Verifies JWT token and attaches user data to request
+ * Uses in-memory cache to avoid DB lookup on every request
  */
 const auth = async (req, res, next) => {
   try {
@@ -25,8 +58,17 @@ const auth = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // Find user by ID from token
-    const user = await User.findById(decoded.id).select('-password');
+    // Check cache first
+    let user = getCachedUser(decoded.id);
+    
+    if (!user) {
+      // Cache miss — fetch from DB
+      user = await User.findById(decoded.id).select('-password').lean();
+      
+      if (user) {
+        setCachedUser(decoded.id, user);
+      }
+    }
     
     if (!user) {
       return res.status(401).json({
@@ -91,7 +133,13 @@ const optionalAuth = async (req, res, next) => {
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    const user = await User.findById(decoded.id).select('-password');
+    // Check cache first
+    let user = getCachedUser(decoded.id);
+    
+    if (!user) {
+      user = await User.findById(decoded.id).select('-password').lean();
+      if (user) setCachedUser(decoded.id, user);
+    }
     
     if (user && user.isActive) {
       req.user = user;
@@ -187,6 +235,16 @@ const authorityOnly = async (req, res, next) => {
 const createRateLimit = (maxRequests = 100, windowMs = 15 * 60 * 1000) => {
   const requests = new Map();
 
+  // Periodically clean up old entries to prevent memory leak
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, data] of requests) {
+      if (now > data.resetTime) {
+        requests.delete(key);
+      }
+    }
+  }, windowMs);
+
   return (req, res, next) => {
     const clientId = req.ip || req.connection.remoteAddress;
     const now = Date.now();
@@ -246,5 +304,6 @@ module.exports = {
   authorityOnly,
   createRateLimit,
   generateToken,
-  verifyToken
+  verifyToken,
+  invalidateUserCache
 };

@@ -5,24 +5,25 @@ class SocketService {
   private socket: any = null;
   private isConnected = false;
   private token: string | null = null;
+  private initialized = false;
   
   constructor() {
-    this.initializeSocket();
+    // Don't auto-connect — wait for explicit authentication
   }
 
+  // Lazy initialization: only connect when we have a token
   private async initializeSocket() {
+    if (this.initialized && this.socket?.connected) return;
+    
     try {
-      this.token = sessionStorage.getItem('authToken');
-      console.log('Retrieved token for socket:', this.token ? 'Token found' : 'No token');
+      this.token = localStorage.getItem('authToken');
       
       if (this.socket) {
-        console.log('Disconnecting existing socket...');
         this.socket.disconnect();
         this.socket = null;
       }
       
       const SOCKET_URL = API_BASE_URL;
-      console.log(`Creating new socket connection to ${SOCKET_URL}`);
       this.socket = io(SOCKET_URL, {
         transports: ['websocket', 'polling'],
         timeout: 10000,
@@ -34,6 +35,7 @@ class SocketService {
       });
 
       this.setupEventListeners();
+      this.initialized = true;
     } catch (error) {
       console.error('Socket initialization error:', error);
     }
@@ -81,23 +83,18 @@ class SocketService {
 
   private async authenticate() {
     if (!this.socket || !this.isConnected) {
-      console.log('Socket not connected, skipping authentication');
       return;
     }
 
     try {
-      // Use real JWT token from session storage
-      const realToken = sessionStorage.getItem('authToken');
+      const realToken = localStorage.getItem('authToken');
 
       if (realToken) {
-        console.log('Authenticating socket with real JWT token...');
         this.socket.emit('authenticate', {
           token: realToken,
           userType: 'tourist'
         });
       } else {
-        // Fallback to demo token if not logged in
-        console.log('No auth token found, using demo token');
         this.socket.emit('authenticate', {
           token: 'tourist-demo-token',
           userType: 'tourist'
@@ -117,7 +114,6 @@ class SocketService {
     
     if (!this.isConnected) {
       console.warn('Socket not connected, cannot send location');
-      // Try to reconnect
       this.reconnect();
       return;
     }
@@ -165,18 +161,23 @@ class SocketService {
       this.socket.disconnect();
     }
     
+    this.initialized = false;
     await this.initializeSocket();
   }
 
-  // Update token (when user logs in)
+  // Update token (when user logs in) — this triggers lazy initialization
   public async updateToken(newToken: string) {
-    console.log('Updating socket token...');
     this.token = newToken;
-    sessionStorage.setItem('authToken', newToken);
-    if (this.isConnected) {
+    localStorage.setItem('authToken', newToken);
+    
+    if (!this.initialized) {
+      // First time — initialize the socket
+      await this.initializeSocket();
+    } else if (this.isConnected) {
       this.authenticate();
     } else {
-      console.log('Socket not connected, will authenticate when connected');
+      // Reconnect with new token
+      await this.reconnect();
     }
   }
 
@@ -185,6 +186,7 @@ class SocketService {
     if (this.socket) {
       this.socket.disconnect();
       this.isConnected = false;
+      this.initialized = false;
     }
   }
 
@@ -199,6 +201,15 @@ class SocketService {
 
   // Subscribe to events
   public on(event: string, callback: (data: any) => void) {
+    if (!this.socket && !this.initialized) {
+      // If socket isn't initialized yet, do it now
+      this.initializeSocket().then(() => {
+        if (this.socket) {
+          this.socket.on(event, callback);
+        }
+      });
+      return;
+    }
     if (this.socket) {
       this.socket.on(event, callback);
     }

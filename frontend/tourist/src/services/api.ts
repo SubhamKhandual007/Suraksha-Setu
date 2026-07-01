@@ -9,13 +9,22 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // Performance: set reasonable timeouts
+  timeout: 15000,
 });
+
+// In-memory token cache to avoid repeated localStorage reads
+let cachedToken: string | null = null;
+let tokenCacheDirty = true;
 
 // Request interceptor to add auth token
 api.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('authToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (tokenCacheDirty) {
+    cachedToken = localStorage.getItem('authToken');
+    tokenCacheDirty = false;
+  }
+  if (cachedToken) {
+    config.headers.Authorization = `Bearer ${cachedToken}`;
   }
   return config;
 });
@@ -26,8 +35,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired, clear storage and redirect to login
-      sessionStorage.removeItem('authToken');
-      sessionStorage.removeItem('userData');
+      cachedToken = null;
+      tokenCacheDirty = true;
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -333,30 +344,39 @@ export const apiService = {
 };
 
 // Utility functions for token management
+// Uses localStorage for persistence across tabs + in-memory cache for speed
 export const tokenManager = {
   setToken: (token: string) => {
-    sessionStorage.setItem('authToken', token);
+    cachedToken = token;
+    tokenCacheDirty = false;
+    localStorage.setItem('authToken', token);
   },
 
   getToken: () => {
-    return sessionStorage.getItem('authToken');
+    if (tokenCacheDirty) {
+      cachedToken = localStorage.getItem('authToken');
+      tokenCacheDirty = false;
+    }
+    return cachedToken;
   },
 
   removeToken: () => {
-    sessionStorage.removeItem('authToken');
+    cachedToken = null;
+    tokenCacheDirty = false;
+    localStorage.removeItem('authToken');
   },
 
   setUserData: (userData: any) => {
-    sessionStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('userData', JSON.stringify(userData));
   },
 
   getUserData: (): any | null => {
-    const userData = sessionStorage.getItem('userData');
+    const userData = localStorage.getItem('userData');
     return userData ? JSON.parse(userData) : null;
   },
 
   removeUserData: () => {
-    sessionStorage.removeItem('userData');
+    localStorage.removeItem('userData');
   },
 };
 
